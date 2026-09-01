@@ -1,0 +1,767 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Scholarly - Assignment Tracker & Planner</title>\
+    <style>\
+        :root \{\
+            --primary: #6366f1;\
+            --primary-hover: #4f46e5;\
+            --primary-light: #eeef2ff;\
+            --bg-main: #f8fafc;\
+            --sidebar-bg: #ffffff;\
+            --card-bg: #ffffff;\
+            --text-dark: #0f172a;\
+            --text-muted: #64748b;\
+            --border-color: #e2e8f0;\
+            --tag-medium-bg: #fef3c7;\
+            --tag-medium-text: #b45309;\
+            --tag-overdue-bg: #fee2e2;\
+            --tag-overdue-text: #b91c1c;\
+            --tag-subject-bg: #fce7f3;\
+            --tag-subject-text: #be185d;\
+        \}\
+\
+        * \{\
+            box-sizing: border-box;\
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;\
+            margin: 0;\
+            padding: 0;\
+        \}\
+\
+        body \{\
+            display: flex;\
+            background-color: var(--bg-main);\
+            color: var(--text-dark);\
+            min-height: 100vh;\
+        \}\
+\
+        /* Sidebar Navigation */\
+        sidebar \{\
+            width: 260px;\
+            background: var(--sidebar-bg);\
+            border-right: 1px solid var(--border-color);\
+            padding: 1.5rem 1rem;\
+            display: flex;\
+            flex-direction: column;\
+            justify-content: space-between;\
+            flex-shrink: 0;\
+        \}\
+\
+        .brand-logo \{\
+            display: flex;\
+            align-items: center;\
+            gap: 0.75rem;\
+            font-size: 1.25rem;\
+            font-weight: 700;\
+            color: var(--text-dark);\
+            margin-bottom: 2rem;\
+            padding-left: 0.5rem;\
+        \}\
+\
+        .brand-icon \{\
+            width: 32px;\
+            height: 32px;\
+            background: var(--primary);\
+            color: white;\
+            border-radius: 8px;\
+            display: flex;\
+            align-items: center;\
+            justify-content: center;\
+            font-weight: bold;\
+        \}\
+\
+        .nav-group \{\
+            display: flex;\
+            flex-direction: column;\
+            gap: 0.35rem;\
+        \}\
+\
+        .nav-item \{\
+            display: flex;\
+            align-items: center;\
+            gap: 0.85rem;\
+            padding: 0.75rem 1rem;\
+            color: var(--text-muted);\
+            border-radius: 10px;\
+            font-weight: 600;\
+            border: none;\
+            background: transparent;\
+            cursor: pointer;\
+            text-align: left;\
+            width: 100%;\
+            font-size: 0.95rem;\
+            transition: all 0.15s ease-in-out;\
+        \}\
+\
+        .nav-item:hover \{\
+            background-color: #f1f5f9;\
+            color: var(--text-dark);\
+        \}\
+\
+        .nav-item.active \{\
+            background-color: #6366f115;\
+            color: var(--primary);\
+        \}\
+\
+        .nav-item svg \{\
+            width: 20px;\
+            height: 20px;\
+            stroke-width: 2;\
+            stroke: currentColor;\
+            fill: none;\
+        \}\
+\
+        .sidebar-bottom \{\
+            border-top: 1px solid var(--border-color);\
+            padding-top: 1rem;\
+        \}\
+\
+        /* Main View Container */\
+        main \{\
+            flex: 1;\
+            padding: 2.5rem 3rem;\
+            overflow-y: auto;\
+            max-width: 1200px;\
+        \}\
+\
+        .page-header \{\
+            display: flex;\
+            justify-content: space-between;\
+            align-items: flex-start;\
+            margin-bottom: 2rem;\
+        \}\
+\
+        .page-header h1 \{\
+            font-size: 2rem;\
+            font-weight: 800;\
+            letter-spacing: -0.025em;\
+        \}\
+\
+        .page-header p \{\
+            color: var(--text-muted);\
+            font-size: 0.95rem;\
+            margin-top: 0.25rem;\
+        \}\
+\
+        .btn-action \{\
+            background-color: var(--text-dark);\
+            color: white;\
+            border: none;\
+            padding: 0.65rem 1.25rem;\
+            border-radius: 9999px;\
+            font-weight: 600;\
+            cursor: pointer;\
+            display: flex;\
+            align-items: center;\
+            gap: 0.5rem;\
+            font-size: 0.9rem;\
+            transition: opacity 0.2s;\
+        \}\
+\
+        .btn-action:hover \{\
+            opacity: 0.9;\
+        \}\
+\
+        /* View Layout Routing */\
+        .view-pane \{\
+            display: none;\
+        \}\
+\
+        .view-pane.active \{\
+            display: block;\
+        \}\
+\
+        /* Metrics & Cards */\
+        .metrics-grid \{\
+            display: grid;\
+            grid-template-columns: repeat(4, 1fr);\
+            gap: 1.25rem;\
+            margin-bottom: 2.5rem;\
+        \}\
+\
+        .metric-card \{\
+            background: var(--card-bg);\
+            border: 1px solid var(--border-color);\
+            border-radius: 16px;\
+            padding: 1.25rem 1.5rem;\
+            position: relative;\
+        \}\
+\
+        .metric-icon \{\
+            position: absolute;\
+            top: 1.25rem;\
+            right: 1.25rem;\
+            width: 32px;\
+            height: 32px;\
+            border-radius: 8px;\
+            display: flex;\
+            align-items: center;\
+            justify-content: center;\
+            font-size: 0.9rem;\
+        \}\
+\
+        .metric-label \{\
+            font-size: 0.875rem;\
+            font-weight: 600;\
+            color: var(--text-muted);\
+        \}\
+\
+        .metric-value \{\
+            font-size: 2.25rem;\
+            font-weight: 800;\
+            margin-top: 0.5rem;\
+        \}\
+\
+        /* Task Cards */\
+        .section-label \{\
+            font-size: 1.1rem;\
+            font-weight: 700;\
+            margin-bottom: 1rem;\
+            display: flex;\
+            align-items: center;\
+            gap: 0.5rem;\
+        \}\
+\
+        .task-list \{\
+            display: flex;\
+            flex-direction: column;\
+            gap: 0.85rem;\
+            margin-bottom: 2.5rem;\
+        \}\
+\
+        .task-card \{\
+            background: var(--card-bg);\
+            border: 1px solid var(--border-color);\
+            border-radius: 16px;\
+            padding: 1.25rem 1.5rem;\
+            display: flex;\
+            align-items: flex-start;\
+            gap: 1.25rem;\
+            position: relative;\
+        \}\
+\
+        .checkbox-custom \{\
+            width: 22px;\
+            height: 22px;\
+            border-radius: 50%;\
+            border: 2px solid #cbd5e1;\
+            cursor: pointer;\
+            margin-top: 2px;\
+            flex-shrink: 0;\
+            transition: all 0.2s;\
+        \}\
+\
+        .checkbox-custom.checked \{\
+            background: #22c55e;\
+            border-color: #22c55e;\
+        \}\
+\
+        .task-content \{\
+            flex: 1;\
+        \}\
+\
+        .task-title \{\
+            font-weight: 700;\
+            font-size: 1.05rem;\
+            margin-bottom: 0.35rem;\
+        \}\
+\
+        .task-desc \{\
+            color: var(--text-muted);\
+            font-size: 0.9rem;\
+            margin-bottom: 0.75rem;\
+        \}\
+\
+        .badge-row \{\
+            display: flex;\
+            gap: 0.5rem;\
+            align-items: center;\
+        \}\
+\
+        .badge \{\
+            padding: 0.25rem 0.75rem;\
+            border-radius: 9999px;\
+            font-size: 0.75rem;\
+            font-weight: 700;\
+        \}\
+\
+        /* Day Planner Layout */\
+        .planner-header \{\
+            display: flex;\
+            align-items: center;\
+            gap: 1rem;\
+            margin-bottom: 1.5rem;\
+        \}\
+\
+        .planner-grid \{\
+            background: var(--card-bg);\
+            border: 1px solid var(--border-color);\
+            border-radius: 16px;\
+            overflow: hidden;\
+        \}\
+\
+        .time-row \{\
+            display: flex;\
+            border-bottom: 1px solid var(--border-color);\
+            min-height: 64px;\
+        \}\
+\
+        .time-row:last-child \{\
+            border-bottom: none;\
+        \}\
+\
+        .time-cell \{\
+            width: 100px;\
+            padding: 1rem;\
+            font-weight: 600;\
+            font-size: 0.85rem;\
+            color: var(--text-muted);\
+            border-right: 1px solid var(--border-color);\
+            flex-shrink: 0;\
+        \}\
+\
+        .event-cell \{\
+            flex: 1;\
+            padding: 0.5rem 1rem;\
+            display: flex;\
+            align-items: center;\
+        \}\
+\
+        /* Subjects Grid */\
+        .subject-grid \{\
+            display: grid;\
+            grid-template-columns: repeat(2, 1fr);\
+            gap: 1.25rem;\
+        \}\
+\
+        .subject-card \{\
+            background: var(--card-bg);\
+            border: 1px solid var(--border-color);\
+            border-radius: 16px;\
+            padding: 1.5rem;\
+            display: flex;\
+            gap: 1.25rem;\
+        \}\
+\
+        .subject-icon \{\
+            width: 48px;\
+            height: 48px;\
+            border-radius: 12px;\
+            background: #f1f5f9;\
+            display: flex;\
+            align-items: center;\
+            justify-content: center;\
+            font-size: 1.5rem;\
+        \}\
+\
+        .progress-bar-bg \{\
+            height: 6px;\
+            background: #e2e8f0;\
+            border-radius: 9999px;\
+            margin-top: 1rem;\
+            overflow: hidden;\
+        \}\
+\
+        .progress-bar-fill \{\
+            height: 100%;\
+            background: var(--primary);\
+            width: 0%;\
+        \}\
+\
+        /* Modal Form */\
+        .modal-overlay \{\
+            position: fixed;\
+            top: 0;\
+            left: 0;\
+            right: 0;\
+            bottom: 0;\
+            background: rgba(15, 23, 42, 0.4);\
+            display: none;\
+            align-items: center;\
+            justify-content: center;\
+            z-index: 1000;\
+        \}\
+\
+        .modal-overlay.active \{\
+            display: flex;\
+        \}\
+\
+        .modal-body \{\
+            background: white;\
+            border-radius: 20px;\
+            padding: 2rem;\
+            width: 100%;\
+            max-width: 500px;\
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);\
+        \}\
+\
+        .form-group \{\
+            margin-bottom: 1.25rem;\
+        \}\
+\
+        .form-group label \{\
+            display: block;\
+            font-size: 0.875rem;\
+            font-weight: 700;\
+            margin-bottom: 0.5rem;\
+        \}\
+\
+        .form-group input, .form-group select, .form-group textarea \{\
+            width: 100%;\
+            padding: 0.75rem 1rem;\
+            border: 1px solid var(--border-color);\
+            border-radius: 10px;\
+            font-size: 0.95rem;\
+        \}\
+    </style>\
+</head>\
+<body>\
+\
+    <!-- Sidebar Navigation -->\
+    <sidebar>\
+        <div>\
+            <div class="brand-logo">\
+                <div class="brand-icon">S</div>\
+                <span>Scholarly</span>\
+            </div>\
+\
+            <div class="nav-group">\
+                <button class="nav-item active" onclick="navigate('dashboard', this)">\
+                    <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>\
+                    Dashboard\
+                </button>\
+                <button class="nav-item" onclick="navigate('planner', this)">\
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>\
+                    Planner\
+                </button>\
+                <button class="nav-item" onclick="navigate('assignments', this)">\
+                    <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>\
+                    Assignments\
+                </button>\
+                <button class="nav-item" onclick="navigate('calendar', this)">\
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>\
+                    Calendar\
+                </button>\
+                <button class="nav-item" onclick="navigate('subjects', this)">\
+                    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>\
+                    Subjects\
+                </button>\
+            </div>\
+        </div>\
+\
+        <div class="sidebar-bottom">\
+            <button class="nav-item" onclick="navigate('settings', this)">\
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>\
+                Settings\
+            </button>\
+        </div>\
+    </sidebar>\
+\
+    <!-- Main Workspace -->\
+    <main>\
+\
+        <!-- Dashboard View -->\
+        <div id="dashboard" class="view-pane active">\
+            <div class="page-header">\
+                <div>\
+                    <h1>Dashboard</h1>\
+                    <p id="dashboard-date-subtitle">Overview of your workload</p>\
+                </div>\
+                <button class="btn-action" onclick="openModal()">+ New</button>\
+            </div>\
+\
+            <div class="metrics-grid">\
+                <div class="metric-card">\
+                    <div class="metric-icon" style="background:#fee2e2; color:#b91c1c;">\uc0\u9888 \u65039 </div>\
+                    <div class="metric-label">Overdue</div>\
+                    <div class="metric-value" id="count-overdue">0</div>\
+                </div>\
+                <div class="metric-card">\
+                    <div class="metric-icon" style="background:#fef3c7; color:#b45309;">\uc0\u9200 </div>\
+                    <div class="metric-label">Due this week</div>\
+                    <div class="metric-value" id="count-week">0</div>\
+                </div>\
+                <div class="metric-card">\
+                    <div class="metric-icon" style="background:#e0e7ff; color:#4338ca;">\uc0\u55357 \u56517 </div>\
+                    <div class="metric-label">Active</div>\
+                    <div class="metric-value" id="count-active">0</div>\
+                </div>\
+                <div class="metric-card">\
+                    <div class="metric-icon" style="background:#dcfce7; color:#15803d;">\uc0\u9989 </div>\
+                    <div class="metric-label">Completed</div>\
+                    <div class="metric-value" id="count-completed">0</div>\
+                </div>\
+            </div>\
+\
+            <div class="section-label">\uc0\u9888 \u65039  Overdue</div>\
+            <div class="task-list" id="overdue-list"></div>\
+\
+            <div class="section-label">\uc0\u55357 \u56596  Reminders (Next 7 Days)</div>\
+            <div class="task-list" id="reminder-list"></div>\
+        </div>\
+\
+        <!-- Day Planner View -->\
+        <div id="planner" class="view-pane">\
+            <div class="page-header">\
+                <div>\
+                    <h1>Day Planner</h1>\
+                    <p>Timeline for today's assignments</p>\
+                </div>\
+                <button class="btn-action" onclick="openModal()">+ New Task</button>\
+            </div>\
+\
+            <div class="planner-grid" id="planner-timeline"></div>\
+        </div>\
+\
+        <!-- Assignments View -->\
+        <div id="assignments" class="view-pane">\
+            <div class="page-header">\
+                <div>\
+                    <h1>Assignments</h1>\
+                    <p>Filter and view all coursework</p>\
+                </div>\
+                <button class="btn-action" onclick="openModal()">+ New</button>\
+            </div>\
+\
+            <div class="task-list" id="all-assignments-list"></div>\
+        </div>\
+\
+        <!-- Calendar View -->\
+        <div id="calendar" class="view-pane">\
+            <div class="page-header">\
+                <div>\
+                    <h1>Calendar</h1>\
+                    <p>Monthly overview of scheduled work</p>\
+                </div>\
+            </div>\
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; text-align: center; color: var(--text-muted);">\
+                Calendar View Active\
+            </div>\
+        </div>\
+\
+        <!-- Subjects View -->\
+        <div id="subjects" class="view-pane">\
+            <div class="page-header">\
+                <div>\
+                    <h1>Subjects</h1>\
+                    <p>Track progress by subject</p>\
+                </div>\
+            </div>\
+            <div class="subject-grid" id="subjects-grid"></div>\
+        </div>\
+\
+        <!-- Settings View -->\
+        <div id="settings" class="view-pane">\
+            <div class="page-header">\
+                <div>\
+                    <h1>Settings</h1>\
+                    <p>Personalize your local workspace</p>\
+                </div>\
+            </div>\
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem;">\
+                <div class="form-group">\
+                    <label>Display Name</label>\
+                    <input type="text" id="setting-name" value="Student">\
+                </div>\
+                <button class="btn-action" onclick="saveSettings()">Save Preferences</button>\
+            </div>\
+        </div>\
+\
+    </main>\
+\
+    <!-- Create Assignment Modal -->\
+    <div class="modal-overlay" id="task-modal">\
+        <div class="modal-body">\
+            <h2 style="margin-bottom: 1.5rem;">New Assignment</h2>\
+            <form id="create-task-form">\
+                <div class="form-group">\
+                    <label>Assignment Title</label>\
+                    <input type="text" id="modal-title" required placeholder="e.g. Reading: Chapter 3">\
+                </div>\
+                <div class="form-group">\
+                    <label>Description</label>\
+                    <textarea id="modal-desc" rows="3" placeholder="Read and annotate chapter 3..."></textarea>\
+                </div>\
+                <div class="form-group">\
+                    <label>Subject</label>\
+                    <select id="modal-subject">\
+                        <option value="English">English</option>\
+                        <option value="Mathematics">Mathematics</option>\
+                        <option value="Biology">Biology</option>\
+                        <option value="History">History</option>\
+                    </select>\
+                </div>\
+                <div style="display: flex; gap: 1rem;">\
+                    <div class="form-group" style="flex: 1;">\
+                        <label>Due Date</label>\
+                        <input type="date" id="modal-date" required>\
+                    </div>\
+                    <div class="form-group" style="flex: 1;">\
+                        <label>Time</label>\
+                        <input type="time" id="modal-time" required value="09:00">\
+                    </div>\
+                </div>\
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">\
+                    <button type="button" style="background: transparent; border: 1px solid var(--border-color); padding: 0.65rem 1.25rem; border-radius: 10px; cursor: pointer;" onclick="closeModal()">Cancel</button>\
+                    <button type="submit" class="btn-action" style="border-radius: 10px;">Create Task</button>\
+                </div>\
+            </form>\
+        </div>\
+    </div>\
+\
+    <!-- Core App Logic -->\
+    <script>\
+        // Default Seed Data matching Base44 layout\
+        const defaultState = \{\
+            user: \{ name: 'Student' \},\
+            subjects: [\
+                \{ id: 'math', name: 'Mathematics', teacher: 'Mr. Thompson', icon: '\uc0\u55357 \u56528 ' \},\
+                \{ id: 'eng', name: 'English', teacher: 'Ms. Garcia', icon: '\uc0\u55357 \u56534 ' \},\
+                \{ id: 'bio', name: 'Biology', teacher: 'Dr. Patel', icon: '\uc0\u55358 \u56810 ' \},\
+                \{ id: 'hist', name: 'History', teacher: 'Mrs. Lee', icon: '\uc0\u55356 \u57307 \u65039 ' \}\
+            ],\
+            tasks: [\
+                \{ id: 1, title: 'Reading: Chapter 3', desc: 'Read and annotate chapter 3 of the textbook.', subject: 'English', priority: 'Medium', date: '2026-08-30', time: '09:00', completed: false \},\
+                \{ id: 2, title: 'Alibra', desc: 'do one lesson of math', subject: 'Mathematics', priority: 'Medium', date: '2026-09-01', time: '10:00', completed: false \},\
+                \{ id: 3, title: 'Algebra problem set 4', desc: 'Chapter 4, exercises 1-20. Show all working.', subject: 'Mathematics', priority: 'High', date: '2026-09-03', time: '08:30', completed: false \}\
+            ]\
+        \};\
+\
+        let state = JSON.parse(localStorage.getItem('scholarly_state')) || defaultState;\
+\
+        function saveState() \{\
+            localStorage.setItem('scholarly_state', JSON.stringify(state));\
+            render();\
+        \}\
+\
+        // View Navigation\
+        function navigate(viewId, btn) \{\
+            document.querySelectorAll('.view-pane').forEach(pane => pane.classList.remove('active'));\
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));\
+            document.getElementById(viewId).classList.add('active');\
+            if (btn) btn.classList.add('active');\
+        \}\
+\
+        // Modal Controls\
+        function openModal() \{ document.getElementById('task-modal').classList.add('active'); \}\
+        function closeModal() \{ document.getElementById('task-modal').classList.remove('active'); \}\
+\
+        // Create Task\
+        document.getElementById('create-task-form').addEventListener('submit', (e) => \{\
+            e.preventDefault();\
+            const newTask = \{\
+                id: Date.now(),\
+                title: document.getElementById('modal-title').value,\
+                desc: document.getElementById('modal-desc').value,\
+                subject: document.getElementById('modal-subject').value,\
+                priority: 'Medium',\
+                date: document.getElementById('modal-date').value,\
+                time: document.getElementById('modal-time').value,\
+                completed: false\
+            \};\
+            state.tasks.push(newTask);\
+            saveState();\
+            closeModal();\
+            e.target.reset();\
+        \});\
+\
+        // Toggle Task\
+        function toggleTask(id) \{\
+            const task = state.tasks.find(t => t.id === id);\
+            if (task) task.completed = !task.completed;\
+            saveState();\
+        \}\
+\
+        // Render Functions\
+        function render() \{\
+            // Metrics\
+            const active = state.tasks.filter(t => !t.completed);\
+            const completed = state.tasks.filter(t => t.completed);\
+            document.getElementById('count-active').innerText = active.length;\
+            document.getElementById('count-completed').innerText = completed.length;\
+\
+            // Task List Rendering Engine\
+            const overdueList = document.getElementById('overdue-list');\
+            const reminderList = document.getElementById('reminder-list');\
+            const allList = document.getElementById('all-assignments-list');\
+            \
+            overdueList.innerHTML = '';\
+            reminderList.innerHTML = '';\
+            allList.innerHTML = '';\
+\
+            state.tasks.forEach(task => \{\
+                const card = document.createElement('div');\
+                card.className = 'task-card';\
+                card.innerHTML = `\
+                    <div class="checkbox-custom $\{task.completed ? 'checked' : ''\}" onclick="toggleTask($\{task.id\})"></div>\
+                    <div class="task-content">\
+                        <div class="task-title" style="$\{task.completed ? 'text-decoration:line-through; color:var(--text-muted);' : ''\}">$\{task.title\}</div>\
+                        $\{task.desc ? `<div class="task-desc">$\{task.desc\}</div>` : ''\}\
+                        <div class="badge-row">\
+                            <span class="badge" style="background:var(--tag-subject-bg); color:var(--tag-subject-text);">$\{task.subject\}</span>\
+                            <span class="badge" style="background:var(--tag-medium-bg); color:var(--tag-medium-text);">$\{task.priority\}</span>\
+                            <span class="badge" style="background:var(--tag-overdue-bg); color:var(--tag-overdue-text);">$\{task.date\}</span>\
+                        </div>\
+                    </div>\
+                `;\
+                allList.appendChild(card);\
+                if (task.date < '2026-09-01' && !task.completed) \{\
+                    overdueList.appendChild(card.cloneNode(true));\
+                \} else if (!task.completed) \{\
+                    reminderList.appendChild(card.cloneNode(true));\
+                \}\
+            \});\
+\
+            // Timeline Planner Setup\
+            const timeline = document.getElementById('planner-timeline');\
+            timeline.innerHTML = '';\
+            for (let hour = 7; hour <= 23; hour++) \{\
+                const hourStr = (hour < 10 ? '0' : '') + hour + ':00';\
+                const matched = state.tasks.find(t => t.time.startsWith((hour < 10 ? '0' : '') + hour));\
+                const row = document.createElement('div');\
+                row.className = 'time-row';\
+                row.innerHTML = `\
+                    <div class="time-cell">$\{hour > 12 ? (hour - 12) + ' PM' : hour + ' AM'\}</div>\
+                    <div class="event-cell">\
+                        $\{matched ? `<span class="badge" style="background:var(--tag-subject-bg); color:var(--tag-subject-text); margin-right:8px;">$\{matched.subject\}</span> <strong>$\{matched.title\}</strong>` : ''\}\
+                    </div>\
+                `;\
+                timeline.appendChild(row);\
+            \}\
+\
+            // Subjects Grid\
+            const subjectsGrid = document.getElementById('subjects-grid');\
+            subjectsGrid.innerHTML = '';\
+            state.subjects.forEach(sub => \{\
+                const subTasks = state.tasks.filter(t => t.subject === sub.name);\
+                const subDone = subTasks.filter(t => t.completed).length;\
+                const pct = subTasks.length ? Math.round((subDone / subTasks.length) * 100) : 0;\
+\
+                const subCard = document.createElement('div');\
+                subCard.className = 'subject-card';\
+                subCard.innerHTML = `\
+                    <div class="subject-icon">$\{sub.icon\}</div>\
+                    <div style="flex:1;">\
+                        <h3 style="font-size:1.1rem;">$\{sub.name\}</h3>\
+                        <div style="color:var(--text-muted); font-size:0.875rem; margin-top:2px;">$\{sub.teacher\}</div>\
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">$\{subDone\}/$\{subTasks.length\} done ($\{pct\}%)</div>\
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:$\{pct\}%"></div></div>\
+                    </div>\
+                `;\
+                subjectsGrid.appendChild(subCard);\
+            \});\
+        \}\
+\
+        render();\
+    </script>\
+</body>\
+</html>}
