@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholarly - Professional Production Edition</title>
+    <title>Scholarly - Advanced Professional Edition</title>
     
-    <!-- External Fonts -->
+    <!-- 
+        ========================================================================
+        EXTERNAL RESOURCES & TYPOGRAPHY
+        ========================================================================
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
-           1. COMPREHENSIVE DESIGN TOKENS & CSS VARIABLES
-           ========================================================================== */
+        /* 
+         * =====================================================================
+         * 1. COMPREHENSIVE DESIGN TOKENS & CSS VARIABLES
+         * =====================================================================
+         */
         :root {
             /* Base Colors */
             --color-white: #ffffff;
             --color-black: #000000;
             --color-transparent: transparent;
             
-            /* Dynamic Theme Accents (Updated via JavaScript) */
+            /* Dynamic Theme Accents */
             --theme-primary: #6366f1;
             --theme-primary-hover: #4f46e5;
             --theme-primary-active: #4338ca;
@@ -124,13 +130,23 @@
             --z-toast: 120;
         }
 
-        /* ==========================================================================
-           2. CSS RESET & NORMALIZE
-           ========================================================================== */
-        *, *::before, *::after {
+        /* 
+         * =====================================================================
+         * 2. CSS RESET & NORMALIZE
+         * =====================================================================
+         */
+        *, 
+        *::before, 
+        *::after {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            margin-top: 0;
+            margin-right: 0;
+            margin-bottom: 0;
+            margin-left: 0;
+            padding-top: 0;
+            padding-right: 0;
+            padding-bottom: 0;
+            padding-left: 0;
         }
 
         html {
@@ -148,10 +164,14 @@
             display: flex;
             height: 100vh;
             width: 100vw;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
 
-        button, input, select, textarea {
+        button, 
+        input, 
+        select, 
+        textarea {
             font-family: inherit;
             color: inherit;
             outline: none;
@@ -168,30 +188,40 @@
             color: inherit;
         }
         
-        ul, ol {
-            list-style: none;
+        ul, 
+        ol {
+            list-style-type: none;
         }
 
-        /* ==========================================================================
-           3. STRUCTURAL LAYOUT
-           ========================================================================== */
+        /* 
+         * =====================================================================
+         * 3. STRUCTURAL LAYOUT
+         * =====================================================================
+         */
+        
         .app-layout {
             display: flex;
+            flex-direction: row;
             width: 100%;
             height: 100%;
         }
 
-        /* 3.1 Sidebar Navigation */
         .sidebar {
             width: 280px;
             background-color: var(--bg-surface-primary);
-            border-right: 1px solid var(--border-medium);
+            border-right-width: 1px;
+            border-right-style: solid;
+            border-right-color: var(--border-medium);
             display: flex;
             flex-direction: column;
-            padding: var(--space-6) var(--space-4);
+            padding-top: var(--space-6);
+            padding-right: var(--space-4);
+            padding-bottom: var(--space-6);
+            padding-left: var(--space-4);
             flex-shrink: 0;
             z-index: var(--z-sidebar);
-            transition: width var(--transition-normal);
+            transition-property: width;
+            transition-duration: var(--transition-normal);
             box-shadow: var(--shadow-sm);
         }
 
@@ -218,14 +248,17 @@
             justify-content: center;
             font-size: 1.25rem;
             box-shadow: 0 4px 12px var(--theme-primary-light);
-            transition: background-color var(--transition-normal);
+            transition-property: background-color;
+            transition-duration: var(--transition-normal);
         }
 
         .navigation-menu {
             display: flex;
             flex-direction: column;
             gap: var(--space-2);
-            flex: 1;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0%;
             overflow-y: auto;
         }
 
@@ -233,12 +266,16 @@
             display: flex;
             align-items: center;
             gap: var(--space-3);
-            padding: var(--space-3) var(--space-4);
+            padding-top: var(--space-3);
+            padding-right: var(--space-4);
+            padding-bottom: var(--space-3);
+            padding-left: var(--space-4);
             border-radius: var(--radius-lg);
             color: var(--text-secondary);
             font-weight: 500;
             font-size: 0.95rem;
-            transition: all var(--transition-fast);
+            transition-property: all;
+            transition-duration: var(--transition-fast);
             width: 100%;
             text-align: left;
         }
@@ -265,7 +302,8 @@
             fill: none;
             stroke-linecap: round;
             stroke-linejoin: round;
-            transition: transform var(--transition-fast);
+            transition-property: transform;
+            transition-duration: var(--transition-fast);
         }
 
         .nav-item-button:hover svg {
@@ -275,12 +313,15 @@
         .sidebar-footer-container {
             margin-top: auto;
             padding-top: var(--space-4);
-            border-top: 1px solid var(--border-medium);
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: var(--border-medium);
         }
 
-        /* 3.2 Main Workspace Area */
         .workspace-main {
-            flex: 1;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0%;
             overflow-y: auto;
             overflow-x: hidden;
             position: relative;
@@ -290,10 +331,18 @@
 
         .view-section-container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--space-10) var(--space-12);
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 0;
+            margin-left: auto;
+            padding-top: var(--space-10);
+            padding-right: var(--space-12);
+            padding-bottom: var(--space-10);
+            padding-left: var(--space-12);
             display: none;
-            animation: viewSlideFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation-name: viewSlideFadeIn;
+            animation-duration: 0.4s;
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .view-section-container.is-active {
@@ -301,17 +350,10 @@
         }
 
         @keyframes viewSlideFadeIn {
-            0% { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            }
-            100% { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 3.3 Page Headers */
         .page-header-wrapper {
             display: flex;
             justify-content: space-between;
@@ -334,21 +376,26 @@
             font-weight: 400;
         }
 
-        /* ==========================================================================
-           4. REUSABLE UI COMPONENTS
-           ========================================================================== */
+        /* 
+         * =====================================================================
+         * 4. REUSABLE UI COMPONENTS
+         * =====================================================================
+         */
         
-        /* 4.1 Buttons */
         .button-base {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: var(--space-2);
-            padding: var(--space-3) var(--space-6);
+            padding-top: var(--space-3);
+            padding-right: var(--space-6);
+            padding-bottom: var(--space-3);
+            padding-left: var(--space-6);
             border-radius: var(--radius-full);
             font-weight: 600;
             font-size: 0.95rem;
-            transition: all var(--transition-fast);
+            transition-property: all;
+            transition-duration: var(--transition-fast);
             cursor: pointer;
         }
 
@@ -370,7 +417,9 @@
 
         .button-outline {
             background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--border-medium);
             color: var(--text-primary);
         }
 
@@ -380,10 +429,14 @@
         }
         
         .button-icon-only {
-            padding: var(--space-2);
+            padding-top: var(--space-2);
+            padding-right: var(--space-2);
+            padding-bottom: var(--space-2);
+            padding-left: var(--space-2);
             border-radius: var(--radius-lg);
             color: var(--text-tertiary);
-            transition: all var(--transition-fast);
+            transition-property: all;
+            transition-duration: var(--transition-fast);
         }
         
         .button-icon-only:hover {
@@ -391,25 +444,30 @@
             color: var(--text-primary);
         }
 
+        /* 
+         * UPDATED: Make deletion buttons permanently visible 
+         */
         .button-danger-subtle {
             background-color: var(--status-error-bg);
             color: var(--status-error-text);
-            padding: var(--space-2);
+            padding-top: var(--space-2);
+            padding-right: var(--space-2);
+            padding-bottom: var(--space-2);
+            padding-left: var(--space-2);
             border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all var(--transition-fast);
+            opacity: 1; /* Made permanently visible */
+            transition-property: all;
+            transition-duration: var(--transition-fast);
         }
         
         .button-danger-subtle:hover {
             background-color: #fca5a5;
-            transform: scale(1.1) !important;
+            transform: scale(1.1);
         }
 
-        /* 4.2 Form Elements */
         .form-input-group {
             margin-bottom: var(--space-5);
             width: 100%;
@@ -434,19 +492,25 @@
 
         .form-input-control {
             width: 100%;
-            padding: var(--space-3) var(--space-4);
-            border: 1px solid var(--border-medium);
+            padding-top: var(--space-3);
+            padding-right: var(--space-4);
+            padding-bottom: var(--space-3);
+            padding-left: var(--space-4);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--border-medium);
             border-radius: var(--radius-lg);
             font-size: 0.95rem;
             color: var(--text-primary);
             background-color: var(--bg-surface-primary);
-            transition: all var(--transition-fast);
+            transition-property: all;
+            transition-duration: var(--transition-fast);
         }
 
         .form-input-control:focus {
             border-color: var(--theme-primary);
             box-shadow: 0 0 0 4px var(--theme-primary-light);
-            outline: none;
+            outline-style: none;
         }
         
         .form-grid-2-col {
@@ -455,11 +519,12 @@
             gap: var(--space-4);
         }
 
-        /* ==========================================================================
-           5. SPECIFIC VIEW COMPONENTS
-           ========================================================================== */
+        /* 
+         * =====================================================================
+         * 5. SPECIFIC VIEW COMPONENTS
+         * =====================================================================
+         */
 
-        /* 5.1 Dashboard Metric Cards */
         .dashboard-metrics-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -469,13 +534,19 @@
 
         .metric-data-card {
             background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--border-medium);
             border-radius: var(--radius-2xl);
-            padding: var(--space-6);
+            padding-top: var(--space-6);
+            padding-right: var(--space-6);
+            padding-bottom: var(--space-6);
+            padding-left: var(--space-6);
             display: flex;
             flex-direction: column;
             box-shadow: var(--shadow-sm);
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            transition-property: transform, box-shadow, border-color;
+            transition-duration: var(--transition-fast);
             cursor: default;
         }
         
@@ -512,7 +583,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* 5.2 Task List Components */
         .task-list-section-header {
             display: flex;
             align-items: center;
@@ -538,16 +608,23 @@
 
         .assignment-card {
             background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--border-medium);
             border-radius: var(--radius-xl);
-            padding: var(--space-5) var(--space-6);
+            padding-top: var(--space-5);
+            padding-right: var(--space-6);
+            padding-bottom: var(--space-5);
+            padding-left: var(--space-6);
             display: flex;
             gap: var(--space-5);
             align-items: flex-start;
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-property: transform, box-shadow, border-color, z-index;
+            transition-duration: 0.2s;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .assignment-card:hover {
@@ -555,11 +632,6 @@
             box-shadow: var(--shadow-lg);
             border-color: var(--border-dark);
             z-index: 2;
-        }
-        
-        .assignment-card:hover .button-danger-subtle {
-            opacity: 1;
-            transform: translateX(0);
         }
 
         .assignment-color-stripe {
@@ -569,14 +641,17 @@
             bottom: 0;
             width: 6px;
             background-color: var(--theme-primary);
-            transition: background-color var(--transition-normal);
+            transition-property: background-color;
+            transition-duration: var(--transition-normal);
         }
 
         .assignment-checkbox-custom {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            border: 2px solid var(--border-dark);
+            border-width: 2px;
+            border-style: solid;
+            border-color: var(--border-dark);
             background-color: var(--bg-surface-primary);
             cursor: pointer;
             flex-shrink: 0;
@@ -584,32 +659,38 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all var(--transition-fast);
+            transition-property: all;
+            transition-duration: var(--transition-fast);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .assignment-checkbox-custom:hover {
             border-color: var(--theme-primary);
-            background-color: var(--theme-primary-light);
+            background-color: var(--theme-primary-lighter);
             transform: scale(1.1);
         }
 
         .assignment-checkbox-custom.is-checked {
             background-color: var(--status-success-text);
             border-color: var(--status-success-text);
+            box-shadow: 0 2px 6px rgba(21, 128, 61, 0.3);
         }
 
         .assignment-checkbox-custom.is-checked::after {
             content: '';
             width: 6px;
             height: 12px;
-            border: solid var(--color-white);
+            border-style: solid;
+            border-color: var(--color-white);
             border-width: 0 2.5px 2.5px 0;
             transform: rotate(45deg);
-            margin-top: -2px;
+            margin-top: -3px;
         }
 
         .assignment-content-wrapper {
-            flex: 1;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0%;
             min-width: 0;
         }
 
@@ -618,11 +699,12 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: var(--space-1);
-            transition: color var(--transition-fast);
+            transition-property: color;
+            transition-duration: var(--transition-fast);
         }
         
         .assignment-title-text.is-completed {
-            text-decoration: line-through;
+            text-decoration-line: line-through;
             color: var(--text-tertiary);
         }
 
@@ -644,7 +726,10 @@
             display: inline-flex;
             align-items: center;
             gap: var(--space-1);
-            padding: 0.35rem 0.85rem;
+            padding-top: 0.35rem;
+            padding-right: 0.85rem;
+            padding-bottom: 0.35rem;
+            padding-left: 0.85rem;
             border-radius: var(--radius-lg);
             font-size: 0.75rem;
             font-weight: 700;
@@ -653,291 +738,44 @@
 
         .metadata-badge-outline {
             background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--border-medium);
             color: var(--text-secondary);
         }
 
-        /* 5.3 Planner Timeline */
-        .timeline-navigation-toolbar {
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-            margin-bottom: var(--space-6);
-        }
-
-        .timeline-master-container {
-            background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-2xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .timeline-hour-slot {
-            display: flex;
-            border-bottom: 1px solid var(--border-light);
-            min-height: 100px;
-            transition: background-color var(--transition-fast);
-        }
-
-        .timeline-hour-slot:last-child {
-            border-bottom: none;
-        }
-
-        .timeline-hour-slot:hover {
-            background-color: var(--bg-surface-hover);
-        }
-
-        .timeline-hour-label {
-            width: 110px;
-            padding: var(--space-4);
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            text-align: right;
-            border-right: 1px solid var(--border-light);
-            flex-shrink: 0;
-        }
-
-        .timeline-event-area {
-            flex: 1;
-            padding: var(--space-2) var(--space-4);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .timeline-active-event-card {
-            position: absolute;
-            left: 1rem;
-            right: 1rem;
-            top: 0.5rem;
-            bottom: 0.5rem;
-            background-color: var(--theme-primary);
-            color: var(--color-white);
-            border-radius: var(--radius-lg);
-            padding: var(--space-2) var(--space-4);
-            font-size: 0.95rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            box-shadow: var(--shadow-sm);
-            z-index: 5;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            pointer-events: none;
-            transition: transform var(--transition-fast);
-        }
-
-        /* 5.4 Search & Filters */
-        .assignment-filter-bar {
-            display: flex;
-            gap: var(--space-4);
-            margin-bottom: var(--space-8);
-            background-color: var(--bg-surface-primary);
-            padding: var(--space-4);
-            border-radius: var(--radius-xl);
-            border: 1px solid var(--border-medium);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .search-input-wrapper {
-            flex: 2;
-            position: relative;
-        }
-        
-        .search-icon-svg {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-tertiary);
-        }
-        
-        .search-input-field {
-            width: 100%;
-            padding: var(--space-3) var(--space-4) var(--space-3) 2.5rem;
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-lg);
-            font-size: 0.95rem;
-            background-color: var(--bg-body);
-        }
-
-        /* 5.5 Calendar Grid */
-        .calendar-master-wrapper {
-            background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-2xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .calendar-days-header-row {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            background-color: var(--bg-body);
-            border-bottom: 1px solid var(--border-medium);
-        }
-
-        .calendar-day-column-header {
-            padding: var(--space-4);
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            letter-spacing: 0.05em;
-        }
-
-        .calendar-month-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            grid-auto-rows: 140px;
-        }
-
-        .calendar-day-cell {
-            border-right: 1px solid var(--border-light);
-            border-bottom: 1px solid var(--border-light);
-            padding: var(--space-3);
-            cursor: pointer;
-            transition: background-color var(--transition-fast);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .calendar-day-cell:hover {
-            background-color: var(--bg-surface-hover);
-        }
-
-        .calendar-date-indicator {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: var(--space-2);
-            color: var(--text-primary);
-        }
-
-        .calendar-date-indicator.is-current-day {
-            background-color: var(--theme-primary);
-            color: var(--color-white);
-            box-shadow: 0 4px 10px var(--theme-primary-light);
-        }
-        
-        .calendar-mini-event-tag {
-            background-color: var(--theme-primary);
-            color: var(--color-white);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* 5.6 Data Cards (Subjects & Groups) */
-        .general-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: var(--space-6);
-        }
-
-        .entity-data-card {
-            background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-2xl);
-            padding: var(--space-6);
-            display: flex;
-            gap: var(--space-5);
-            align-items: flex-start;
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-normal);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .entity-data-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--theme-primary-light);
-        }
-        
-        .entity-data-card:hover .button-danger-subtle {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .entity-large-icon {
-            width: 72px;
-            height: 72px;
-            border-radius: var(--radius-xl);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.25rem;
-            flex-shrink: 0;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .entity-info-container {
-            flex: 1;
-        }
-
-        .entity-title-heading {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .entity-subtitle-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-4);
-        }
-
-        .entity-progress-wrapper {
-            width: 100%;
-            margin-top: var(--space-4);
-        }
-
-        .entity-progress-statistics {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-2);
-        }
-
-        .entity-progress-track-bg {
-            height: 10px;
-            background-color: var(--border-light);
-            border-radius: var(--radius-full);
-            overflow: hidden;
-        }
-
-        .entity-progress-fill-bar {
-            height: 100%;
-            background-color: var(--theme-primary);
-            border-radius: var(--radius-full);
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 5.7 Settings & Configuration */
         .configuration-panel {
-            max-width: 650px;
+            max-width: 800px;
             background-color: var(--bg-surface-primary);
-            border: 1px solid var(--border-medium);
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--border-medium);
             border-radius: var(--radius-2xl);
-            padding: var(--space-8);
+            padding-top: var(--space-8);
+            padding-right: var(--space-8);
+            padding-bottom: var(--space-8);
+            padding-left: var(--space-8);
             box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-10);
+        }
+        
+        .settings-section-divider {
+            margin-top: var(--space-8);
+            margin-bottom: var(--space-6);
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: var(--border-medium);
+            padding-top: var(--space-6);
+        }
+
+        .settings-section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
         }
         
         .theme-color-selector-grid {
@@ -956,7 +794,9 @@
             align-items: center;
             justify-content: center;
             color: transparent;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-property: all;
+            transition-duration: 0.2s;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: var(--shadow-sm);
         }
         
@@ -980,26 +820,53 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
+
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: var(--space-3);
+            padding-bottom: var(--space-3);
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: var(--border-light);
+        }
+
+        .toggle-switch-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .toggle-switch-description {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
         
         .empty-state-message {
             text-align: center;
-            padding: var(--space-12) var(--space-8);
-            background: var(--bg-surface-primary);
-            border: 2px dashed var(--border-dark);
+            padding-top: var(--space-12);
+            padding-right: var(--space-8);
+            padding-bottom: var(--space-12);
+            padding-left: var(--space-8);
+            background-color: var(--bg-surface-primary);
+            border-width: 2px;
+            border-style: dashed;
+            border-color: var(--border-dark);
             border-radius: var(--radius-2xl);
             color: var(--text-secondary);
             font-size: 1.1rem;
-            grid-column: 1 / -1;
+            grid-column-start: 1;
+            grid-column-end: -1;
         }
 
-        /* ==========================================================================
-           6. OVERLAYS, MODALS, AND TOASTS
-           ========================================================================== */
-        
-        /* 6.1 Modal Backdrop */
         .modal-overlay-backdrop {
             position: fixed;
-            inset: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
             background-color: rgba(15, 23, 42, 0.65);
             backdrop-filter: blur(6px);
             display: none;
@@ -1007,7 +874,9 @@
             justify-content: center;
             z-index: var(--z-modal);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition-property: opacity;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
         }
 
         .modal-overlay-backdrop.is-visible {
@@ -1015,7 +884,6 @@
             opacity: 1;
         }
 
-        /* 6.2 Modal Content Box */
         .modal-dialog-box {
             background-color: var(--bg-surface-primary);
             border-radius: var(--radius-3xl);
@@ -1023,8 +891,11 @@
             max-width: 550px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3);
             transform: scale(0.95) translateY(20px);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
+            transition-property: transform;
+            transition-duration: 0.3s;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-x: hidden;
+            overflow-y: hidden;
             display: flex;
             flex-direction: column;
             max-height: 90vh;
@@ -1035,8 +906,13 @@
         }
 
         .modal-header-section {
-            padding: var(--space-6) var(--space-8);
-            border-bottom: 1px solid var(--border-medium);
+            padding-top: var(--space-6);
+            padding-right: var(--space-8);
+            padding-bottom: var(--space-6);
+            padding-left: var(--space-8);
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: var(--border-medium);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1050,21 +926,30 @@
         }
 
         .modal-body-section {
-            padding: var(--space-6) var(--space-8);
+            padding-top: var(--space-6);
+            padding-right: var(--space-8);
+            padding-bottom: var(--space-6);
+            padding-left: var(--space-8);
             overflow-y: auto;
-            flex: 1;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0%;
         }
         
         .modal-footer-section {
-            padding: var(--space-5) var(--space-8);
+            padding-top: var(--space-5);
+            padding-right: var(--space-8);
+            padding-bottom: var(--space-5);
+            padding-left: var(--space-8);
             background-color: var(--bg-body);
-            border-top: 1px solid var(--border-medium);
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: var(--border-medium);
             display: flex;
             justify-content: flex-end;
             gap: var(--space-4);
         }
 
-        /* 6.3 Toast Notification System */
         .toast-notification-container {
             position: fixed;
             bottom: var(--space-8);
@@ -1078,7 +963,10 @@
         .toast-notification-card {
             background-color: var(--text-primary);
             color: var(--color-white);
-            padding: var(--space-4) var(--space-6);
+            padding-top: var(--space-4);
+            padding-right: var(--space-6);
+            padding-bottom: var(--space-4);
+            padding-left: var(--space-6);
             border-radius: var(--radius-xl);
             font-size: 1rem;
             font-weight: 500;
@@ -1086,7 +974,11 @@
             align-items: center;
             gap: var(--space-4);
             box-shadow: var(--shadow-xl);
-            animation: toastSlideInAnim 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, toastSlideOutAnim 0.4s ease 3.5s forwards;
+            animation-name: toastSlideInAnim, toastSlideOutAnim;
+            animation-duration: 0.4s, 0.4s;
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1), ease;
+            animation-delay: 0s, 3.5s;
+            animation-fill-mode: forwards, forwards;
         }
         
         @keyframes toastSlideInAnim { 
@@ -1098,37 +990,15 @@
             to { transform: translateX(120%); opacity: 0; } 
         }
 
-        /* 6.4 Base44 Watermark (Retained per context) */
-        .floating-watermark-badge {
-            position: fixed;
-            bottom: var(--space-6);
-            left: var(--space-6);
-            background-color: var(--color-black);
-            color: var(--color-white);
-            padding: var(--space-3) var(--space-5);
-            border-radius: var(--radius-lg);
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-            z-index: var(--z-overlay);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .watermark-orange-dot {
-            width: 16px;
-            height: 16px;
-            background-color: #f97316;
-            border-radius: 50%;
-        }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================================================
-         APPLICATION DOM STRUCTURE
-         ========================================================================== -->
+    <!-- 
+        ========================================================================
+        APPLICATION DOM STRUCTURE
+        ========================================================================
+    -->
     <div class="app-layout">
         
         <!-- SIDEBAR NAVIGATION -->
@@ -1143,25 +1013,13 @@
                     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     Dashboard
                 </button>
-                <button class="nav-item-button" data-view-target="planner">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    Day Planner
-                </button>
                 <button class="nav-item-button" data-view-target="assignments">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     Assignments Master
                 </button>
-                <button class="nav-item-button" data-view-target="calendar">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    Monthly Calendar
-                </button>
                 <button class="nav-item-button" data-view-target="subjects">
                     <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                     Subject Tracking
-                </button>
-                <button class="nav-item-button" data-view-target="groups">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    Study Groups
                 </button>
             </nav>
             
@@ -1176,7 +1034,7 @@
         <!-- MAIN WORKSPACE CONTAINER -->
         <main class="workspace-main" id="application-workspace">
             
-            <!-- VIEW 1: DASHBOARD -->
+            <!-- VIEW: DASHBOARD -->
             <section id="view-section-dashboard" class="view-section-container is-active">
                 <header class="page-header-wrapper">
                     <div>
@@ -1191,22 +1049,22 @@
 
                 <div class="dashboard-metrics-grid">
                     <div class="metric-data-card">
-                        <div class="metric-icon-wrapper" style="background: var(--status-error-bg); color: var(--status-error-text);">⚠️</div>
+                        <div class="metric-icon-wrapper" style="background-color: var(--status-error-bg); color: var(--status-error-text);">⚠️</div>
                         <div class="metric-number-display" id="ui-metric-overdue-count">0</div>
                         <div class="metric-title-label">Overdue Tasks</div>
                     </div>
                     <div class="metric-data-card">
-                        <div class="metric-icon-wrapper" style="background: var(--status-warning-bg); color: var(--status-warning-text);">⏰</div>
+                        <div class="metric-icon-wrapper" style="background-color: var(--status-warning-bg); color: var(--status-warning-text);">⏰</div>
                         <div class="metric-number-display" id="ui-metric-due-soon-count">0</div>
                         <div class="metric-title-label">Due This Week</div>
                     </div>
                     <div class="metric-data-card">
-                        <div class="metric-icon-wrapper" style="background: var(--status-info-bg); color: var(--status-info-text);">📅</div>
+                        <div class="metric-icon-wrapper" style="background-color: var(--status-info-bg); color: var(--status-info-text);">📅</div>
                         <div class="metric-number-display" id="ui-metric-active-count">0</div>
                         <div class="metric-title-label">Total Active</div>
                     </div>
                     <div class="metric-data-card">
-                        <div class="metric-icon-wrapper" style="background: var(--status-success-bg); color: var(--status-success-text);">✅</div>
+                        <div class="metric-icon-wrapper" style="background-color: var(--status-success-bg); color: var(--status-success-text);">✅</div>
                         <div class="metric-number-display" id="ui-metric-completed-count">0</div>
                         <div class="metric-title-label">Total Completed</div>
                     </div>
@@ -1221,26 +1079,7 @@
                 <div class="task-items-container" id="ui-container-upcoming-tasks"></div>
             </section>
 
-            <!-- VIEW 2: PLANNER -->
-            <section id="view-section-planner" class="view-section-container">
-                <header class="page-header-wrapper">
-                    <div>
-                        <h1 class="page-title-heading">Day Planner</h1>
-                        <p class="page-subtitle-text">Manage your schedule with hour-by-hour precision.</p>
-                    </div>
-                </header>
-                
-                <div class="timeline-navigation-toolbar">
-                    <button class="button-base button-outline" onclick="ScholarlyApplicationManager.resetPlannerDateToToday()">Today</button>
-                    <button class="button-base button-outline" style="padding: 0.5rem 1rem;" onclick="ScholarlyApp.modifyPlannerDateByOffset(-1)">❮ Prev</button>
-                    <span style="font-weight: 800; font-size: 1.25rem; min-width: 200px; text-align: center; color: var(--text-primary);" id="ui-planner-active-date-display"></span>
-                    <button class="button-base button-outline" style="padding: 0.5rem 1rem;" onclick="ScholarlyApp.modifyPlannerDateByOffset(1)">Next ❯</button>
-                </div>
-                
-                <div class="timeline-master-container" id="ui-container-planner-timeline"></div>
-            </section>
-
-            <!-- VIEW 3: ASSIGNMENTS -->
+            <!-- VIEW: ASSIGNMENTS MASTER -->
             <section id="view-section-assignments" class="view-section-container">
                 <header class="page-header-wrapper">
                     <div>
@@ -1250,49 +1089,10 @@
                     <button class="button-base button-primary" onclick="ScholarlyApplicationManager.openModalInterface('task')">+ Create Assignment</button>
                 </header>
 
-                <div class="assignment-filter-bar">
-                    <div class="search-input-wrapper">
-                        <svg class="search-icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" class="form-input-control search-input-field" id="ui-filter-search-input" placeholder="Search by task title or description keywords...">
-                    </div>
-                    <select class="form-input-control" id="ui-filter-subject-dropdown" style="flex: 1;">
-                        <option value="all">All Registered Subjects</option>
-                    </select>
-                    <select class="form-input-control" id="ui-filter-status-dropdown" style="flex: 1;">
-                        <option value="all">All Status Conditions</option>
-                        <option value="active">Active (Incomplete)</option>
-                        <option value="done">Successfully Completed</option>
-                        <option value="overdue">Currently Overdue</option>
-                    </select>
-                </div>
-
                 <div class="task-items-container" id="ui-container-all-tasks-list"></div>
             </section>
 
-            <!-- VIEW 4: CALENDAR -->
-            <section id="view-section-calendar" class="view-section-container">
-                <header class="page-header-wrapper">
-                    <div>
-                        <h1 class="page-title-heading">Monthly Calendar</h1>
-                        <p class="page-subtitle-text">September 2026 Overview</p>
-                    </div>
-                </header>
-                
-                <div class="calendar-master-wrapper">
-                    <div class="calendar-days-header-row">
-                        <div class="calendar-day-column-header">SUNDAY</div>
-                        <div class="calendar-day-column-header">MONDAY</div>
-                        <div class="calendar-day-column-header">TUESDAY</div>
-                        <div class="calendar-day-column-header">WEDNESDAY</div>
-                        <div class="calendar-day-column-header">THURSDAY</div>
-                        <div class="calendar-day-column-header">FRIDAY</div>
-                        <div class="calendar-day-column-header">SATURDAY</div>
-                    </div>
-                    <div class="calendar-month-grid" id="ui-container-calendar-grid"></div>
-                </div>
-            </section>
-
-            <!-- VIEW 5: SUBJECTS -->
+            <!-- VIEW: SUBJECTS -->
             <section id="view-section-subjects" class="view-section-container">
                 <header class="page-header-wrapper">
                     <div>
@@ -1301,51 +1101,65 @@
                     </div>
                     <button class="button-base button-primary" onclick="ScholarlyApplicationManager.openModalInterface('subject')">+ Add New Subject</button>
                 </header>
-                <div class="general-cards-grid" id="ui-container-subjects-grid"></div>
+                <div class="dashboard-metrics-grid" id="ui-container-subjects-grid" style="grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));"></div>
             </section>
             
-            <!-- VIEW 6: GROUPS -->
-            <section id="view-section-groups" class="view-section-container">
-                <header class="page-header-wrapper">
-                    <div>
-                        <h1 class="page-title-heading">Study Groups</h1>
-                        <p class="page-subtitle-text">Team up, share assignment data, and collaborate effectively.</p>
-                    </div>
-                    <button class="button-base button-primary" onclick="ScholarlyApplicationManager.openModalInterface('group')">+ Form New Group</button>
-                </header>
-                <div class="general-cards-grid" id="ui-container-groups-grid"></div>
-            </section>
-
-            <!-- VIEW 7: SETTINGS -->
+            <!-- VIEW: SETTINGS -->
             <section id="view-section-settings" class="view-section-container">
                 <header class="page-header-wrapper">
                     <div>
                         <h1 class="page-title-heading">Settings & Profile</h1>
-                        <p class="page-subtitle-text">Configure your local application environment and preferences.</p>
+                        <p class="page-subtitle-text">Configure your local application environment, themes, and data preferences.</p>
                     </div>
                 </header>
 
                 <div class="configuration-panel">
                     <form id="configuration-form" onsubmit="ScholarlyApplicationManager.processSettingsSave(event)">
                         
+                        <!-- Profile Settings -->
+                        <h3 class="settings-section-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Profile Information
+                        </h3>
                         <div class="form-input-group">
                             <label class="form-input-label">Display Profile Name</label>
                             <p class="form-input-helper-text">This name represents you in study groups and local exports.</p>
                             <input type="text" class="form-input-control" id="ui-input-setting-display-name" required>
                         </div>
                         
-                        <div class="form-input-group" style="margin-top: var(--space-8);">
+                        <!-- Appearance Settings -->
+                        <div class="settings-section-divider"></div>
+                        <h3 class="settings-section-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            Appearance & Theming
+                        </h3>
+                        <div class="form-input-group">
                             <label class="form-input-label">Application Theme Accent</label>
-                            <p class="form-input-helper-text">Select a primary color. This affects buttons, active states, and focus rings.</p>
+                            <p class="form-input-helper-text">Select a primary color. This affects buttons, active states, and focus rings across the app.</p>
                             <div class="theme-color-selector-grid" id="ui-container-theme-selector">
                                 <!-- Populated dynamically by JavaScript -->
                             </div>
                         </div>
 
-                        <div class="form-input-group" style="margin-top: var(--space-8);">
+                        <!-- System Preferences -->
+                        <div class="settings-section-divider"></div>
+                        <h3 class="settings-section-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+                            System & Notifications
+                        </h3>
+                        
+                        <div class="form-input-group">
                             <label class="form-input-label">Due Soon Warning Threshold (Days)</label>
-                            <p class="form-input-helper-text">Number of days before a due date that a task should be flagged as "Due Soon".</p>
+                            <p class="form-input-helper-text">Number of days before a due date that a task should be flagged as "Due Soon" on your dashboard.</p>
                             <input type="number" class="form-input-control" id="ui-input-setting-reminder-days" min="1" max="30" style="max-width: 150px;">
+                        </div>
+
+                        <div class="toggle-switch-container">
+                            <div>
+                                <div class="toggle-switch-label">Enable Strict Focus Mode</div>
+                                <div class="toggle-switch-description">Hides completed tasks entirely from all views to reduce visual clutter.</div>
+                            </div>
+                            <input type="checkbox" id="ui-toggle-focus-mode" style="width: 20px; height: 20px;">
                         </div>
 
                         <div style="margin-top: var(--space-10);">
@@ -1353,7 +1167,28 @@
                         </div>
                     </form>
                     
-                    <div style="margin-top: var(--space-12); border-top: 1px solid var(--border-medium); padding-top: var(--space-8);">
+                    <!-- Data Management Area -->
+                    <div class="settings-section-divider"></div>
+                    <h3 class="settings-section-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        Data Management
+                    </h3>
+                    <p class="form-input-helper-text" style="margin-bottom: var(--space-4);">Export your local database to a JSON file for backup, or import an existing configuration.</p>
+                    
+                    <div style="display: flex; gap: var(--space-4); margin-bottom: var(--space-8);">
+                        <button class="button-base button-outline" onclick="ScholarlyApplicationManager.exportDataToFile()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export Data Backup
+                        </button>
+                        <button class="button-base button-outline" onclick="document.getElementById('file-import-input').click()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            Import Backup File
+                        </button>
+                        <input type="file" id="file-import-input" style="display: none;" accept=".json" onchange="ScholarlyApplicationManager.importDataFromFile(event)">
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div style="margin-top: var(--space-12); border-top-width: 1px; border-top-style: solid; border-top-color: var(--status-error-bg); padding-top: var(--space-8);">
                         <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--status-error-text); margin-bottom: var(--space-2);">Danger Zone Operations</h3>
                         <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: var(--space-6);">Executing this action will permanently purge all local tasks, subjects, groups, and settings. The application will be restored to its initial factory seed state.</p>
                         <button class="button-base button-outline" style="color: var(--status-error-text); border-color: var(--status-error-bg);" onclick="ScholarlyApplicationManager.executeFactoryReset()">Purge All Application Data</button>
@@ -1363,9 +1198,11 @@
         </main>
     </div>
 
-    <!-- ==========================================================================
-         OVERLAYS & MODAL DIALOGS
-         ========================================================================== -->
+    <!-- 
+        ========================================================================
+        OVERLAYS & MODAL DIALOGS
+        ========================================================================
+    -->
     <div class="modal-overlay-backdrop" id="ui-global-modal-backdrop">
         
         <!-- MODAL: Create New Task -->
@@ -1415,7 +1252,7 @@
                 </div>
             </form>
         </div>
-
+        
         <!-- MODAL: Create New Subject -->
         <div class="modal-dialog-box" id="ui-modal-dialog-subject" style="display: none;">
             <div class="modal-header-section">
@@ -1454,109 +1291,59 @@
                 </div>
             </form>
         </div>
-
-        <!-- MODAL: Create New Study Group -->
-        <div class="modal-dialog-box" id="ui-modal-dialog-group" style="display: none;">
-            <div class="modal-header-section">
-                <h2 class="modal-title-text">Form Study Group</h2>
-                <button class="button-icon-only" onclick="ScholarlyApplicationManager.closeModalInterfaces()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-            </div>
-            <form onsubmit="ScholarlyApplicationManager.processGroupCreation(event)">
-                <div class="modal-body-section">
-                    <div class="form-input-group">
-                        <label class="form-input-label">Group Name Designator</label>
-                        <input type="text" class="form-input-control" id="ui-modal-input-group-name" required placeholder="e.g. Biology Midterm Prep Squad">
-                    </div>
-                    <div class="form-input-group">
-                        <label class="form-input-label">Group Purpose / Description</label>
-                        <textarea class="form-input-control" id="ui-modal-input-group-desc" rows="3" placeholder="Define the primary objective for this study group..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer-section">
-                    <button type="button" class="button-base button-outline" onclick="ScholarlyApplicationManager.closeModalInterfaces()">Cancel Operations</button>
-                    <button type="submit" class="button-base button-primary">Deploy Group Space</button>
-                </div>
-            </form>
-        </div>
     </div>
 
     <!-- Toast Notification Anchor -->
     <div class="toast-notification-container" id="ui-toast-container"></div>
 
-    <!-- Persistent Floating Watermark (Requirement Maintained) -->
-    <div class="floating-watermark-badge">
-        <div class="watermark-orange-dot"></div>
-        Engineered with Base 44 Technology
-    </div>
-
-    <!-- ==========================================================================
-         CORE APPLICATION JAVASCRIPT LOGIC
-         ========================================================================== -->
+    <!-- 
+        ========================================================================
+        CORE APPLICATION JAVASCRIPT LOGIC
+        ========================================================================
+    -->
     <script>
         /**
          * SCHOLARLY PRO APPLICATION CORE
-         * Handles local persistence, DOM rendering, and state mutations.
+         * Handles local persistence, DOM rendering, state mutations, and settings.
          */
 
-        // Constant References
-        const STORAGE_KEY = 'scholarly_pro_database_v2';
-        
-        // Context Date Fixed to Prompt Constraint (Tuesday, September 1, 2026)
+        const STORAGE_KEY = 'scholarly_pro_database_v4';
         const SYSTEM_CONTEXT_DATE = "2026-09-01"; 
         
-        // Available Application Theme Colors
         const THEME_PALETTE = [
-            "#6366f1", // Indigo
-            "#ec4899", // Pink
-            "#0ea5e9", // Sky Blue
-            "#10b981", // Emerald Green
-            "#f59e0b", // Amber
-            "#8b5cf6", // Violet
-            "#ef4444", // Red
-            "#14b8a6", // Teal
-            "#0f172a"  // Slate Dark
+            "#6366f1", "#ec4899", "#0ea5e9", "#10b981", 
+            "#f59e0b", "#8b5cf6", "#ef4444", "#14b8a6", "#0f172a"
         ];
 
-        // Comprehensive Initial Seed Data
         const FACTORY_SEED_DATA = {
-            metadata: {
-                version: "2.1.0",
-                lastInitialized: new Date().toISOString()
-            },
+            metadata: { version: "4.0.0", lastInitialized: new Date().toISOString() },
             settings: { 
                 displayName: "danielsan712d", 
                 themeColor: "#6366f1", 
-                reminderDays: 7 
+                reminderDays: 7,
+                focusMode: false
             },
             subjects: [
                 { id: "sub_alpha", name: "Mathematics", teacher: "Mr. Thompson", icon: "📐", colorClass: "math" },
                 { id: "sub_beta", name: "Literature & Composition", teacher: "Ms. Garcia", icon: "📖", colorClass: "eng" },
-                { id: "sub_gamma", name: "Cellular Biology", teacher: "Dr. Patel", icon: "🧪", colorClass: "bio" },
-                { id: "sub_delta", name: "World History", teacher: "Mrs. Lee", icon: "🏛️", colorClass: "hist" }
+                { id: "sub_gamma", name: "Cellular Biology", teacher: "Dr. Patel", icon: "🧪", colorClass: "bio" }
             ],
-            groups: [
-                // Empty state array ready for user data (Genesis removed per user request)
-            ], 
+            groups: [], 
             tasks: [
-                { id: "tsk_001", title: "Read Chapter 3 Analysis", desc: "Read and comprehensively annotate chapter 3 of the assigned textbook. Focus on themes.", subjectId: "sub_beta", priority: "Medium", date: "2026-08-30", time: "09:00", isCompleted: false },
-                { id: "tsk_002", title: "Algebraic Functions Set", desc: "Complete one full lesson module regarding polynomial functions.", subjectId: "sub_alpha", priority: "Medium", date: "2026-09-01", time: "10:00", isCompleted: false },
-                { id: "tsk_003", title: "Problem Set 4 Validation", desc: "Chapter 4, exercises 1 through 20. Show all underlying algebraic working.", subjectId: "sub_alpha", priority: "High", date: "2026-09-03", time: "08:30", isCompleted: false },
-                { id: "tsk_004", title: "Thematic Essay Draft", desc: "Write an 800-word analytical essay discussing primary character motivations.", subjectId: "sub_beta", priority: "Medium", date: "2026-09-05", time: "23:59", isCompleted: false },
-                { id: "tsk_005", title: "Mitosis Lab Report", desc: "Finalize document containing all generated charts and empirical observations.", subjectId: "sub_gamma", priority: "High", date: "2026-09-08", time: "09:00", isCompleted: true },
-                { id: "tsk_006", title: "WW2 Timeline Creation", desc: "Develop an interactive digital timeline highlighting major geopolitical events.", subjectId: "sub_delta", priority: "Medium", date: "2026-09-12", time: "15:00", isCompleted: false },
-                { id: "tsk_007", title: "Trigonometry Quiz Prep", desc: "Review sine and cosine standard curves.", subjectId: "sub_alpha", priority: "High", date: "2026-09-15", time: "10:00", isCompleted: false }
+                { id: "tsk_001", title: "Read Chapter 3 Analysis", desc: "Read and comprehensively annotate chapter 3.", subjectId: "sub_beta", priority: "Medium", date: "2026-08-30", time: "09:00", isCompleted: false },
+                { id: "tsk_002", title: "Algebraic Functions Set", desc: "Complete one full lesson module.", subjectId: "sub_alpha", priority: "Medium", date: "2026-09-01", time: "10:00", isCompleted: false },
+                { id: "tsk_005", title: "Mitosis Lab Report", desc: "Finalize document containing all generated charts.", subjectId: "sub_gamma", priority: "High", date: "2026-09-08", time: "09:00", isCompleted: true }
             ]
         };
 
         class ScholarlyApplicationController {
             constructor() {
                 this.database = this.loadDatabaseFromStorage();
-                this.activePlannerDateString = SYSTEM_CONTEXT_DATE;
                 this.initializeApplicationContext();
             }
 
             /**
-             * Initializes the application state, binds events, and forces initial render pipeline.
+             * Initializes application themes, binds events, and forces the initial render loop.
              */
             initializeApplicationContext() {
                 this.applyThemeConfiguration();
@@ -1568,73 +1355,103 @@
             // STORAGE & STATE MANAGEMENT
             // ==========================================
 
+            /**
+             * Pulls data from local storage, or seeds with factory defaults if empty.
+             */
             loadDatabaseFromStorage() {
                 try {
                     const localPersistedData = localStorage.getItem(STORAGE_KEY);
-                    if (localPersistedData) {
-                        return JSON.parse(localPersistedData);
-                    }
-                } catch (error) {
-                    console.error("Local storage read failure:", error);
-                }
-                // Return deep copy of seed data
+                    if (localPersistedData) return JSON.parse(localPersistedData);
+                } catch (error) { console.error("Local storage error:", error); }
                 return JSON.parse(JSON.stringify(FACTORY_SEED_DATA));
             }
 
+            /**
+             * Saves the current application state to local storage.
+             */
             commitDatabaseToStorage() {
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.database));
                     this.executeRenderPipeline();
                 } catch (error) {
-                    console.error("Local storage write failure:", error);
-                    this.dispatchToastNotification("Storage capacity error. Unable to save data.", "error");
+                    this.dispatchToastNotification("Storage capacity error.", "error");
                 }
             }
 
+            /**
+             * Destroys all user data and resets to factory settings.
+             */
             executeFactoryReset() {
-                if(confirm("CRITICAL WARNING: This will permanently erase all local application data, resetting all tasks, subjects, and configurations to factory settings. Proceed?")) {
+                if(confirm("CRITICAL WARNING: This will permanently erase all local application data, including courses and tasks. Proceed?")) {
                     localStorage.removeItem(STORAGE_KEY);
                     this.database = JSON.parse(JSON.stringify(FACTORY_SEED_DATA));
                     this.commitDatabaseToStorage();
                     this.applyThemeConfiguration();
-                    this.dispatchToastNotification("Application factory reset complete.", "success");
+                    this.dispatchToastNotification("Factory reset complete.", "success");
                 }
+            }
+
+            /**
+             * Exports the current local database as a downloadable JSON file.
+             */
+            exportDataToFile() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.database, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "scholarly_backup_" + new Date().getTime() + ".json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+                this.dispatchToastNotification("Data export initiated.", "success");
+            }
+
+            /**
+             * Imports a JSON backup file and replaces the current database.
+             */
+            importDataFromFile(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        if(importedData.settings && importedData.tasks) {
+                            this.database = importedData;
+                            this.commitDatabaseToStorage();
+                            this.applyThemeConfiguration();
+                            this.dispatchToastNotification("Backup imported successfully.", "success");
+                        } else {
+                            throw new Error("Invalid schema");
+                        }
+                    } catch (error) {
+                        this.dispatchToastNotification("Import failed. Invalid JSON format.", "error");
+                    }
+                };
+                reader.readAsText(file);
             }
 
             // ==========================================
             // EVENT BINDING & UI DELEGATION
             // ==========================================
 
+            /**
+             * Attaches event listeners for navigation and overlay dimissal.
+             */
             bindGlobalEventListeners() {
-                // Main Navigation Routing
                 const navigationButtons = document.querySelectorAll('.nav-item-button');
                 navigationButtons.forEach(button => {
                     button.addEventListener('click', (event) => {
-                        // Clear active states
                         navigationButtons.forEach(btn => btn.classList.remove('is-active'));
                         document.querySelectorAll('.view-section-container').forEach(view => view.classList.remove('is-active'));
                         
-                        // Set new active states
                         event.currentTarget.classList.add('is-active');
                         const targetViewId = 'view-section-' + event.currentTarget.getAttribute('data-view-target');
                         document.getElementById(targetViewId).classList.add('is-active');
                     });
                 });
 
-                // Assignment Filter Listeners
-                const filterInputIds = ['ui-filter-search-input', 'ui-filter-subject-dropdown', 'ui-filter-status-dropdown'];
-                filterInputIds.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.addEventListener('input', () => this.renderAssignmentsMasterView());
-                    }
-                });
-
-                // Modal Background Dismissal Listener
                 document.getElementById('ui-global-modal-backdrop').addEventListener('click', (event) => {
-                    if (event.target.id === 'ui-global-modal-backdrop') {
-                        this.closeModalInterfaces();
-                    }
+                    if (event.target.id === 'ui-global-modal-backdrop') this.closeModalInterfaces();
                 });
             }
 
@@ -1642,24 +1459,31 @@
             // THEME & STYLING
             // ==========================================
 
+            /**
+             * Updates CSS variables and UI elements to reflect the current theme setting.
+             */
             applyThemeConfiguration() {
                 const currentThemeHex = this.database.settings.themeColor;
                 document.documentElement.style.setProperty('--theme-primary', currentThemeHex);
                 
-                // Build Theme Selector UI Matrix
                 const themeSelectorContainer = document.getElementById('ui-container-theme-selector');
                 themeSelectorContainer.innerHTML = THEME_PALETTE.map(colorHex => {
                     const isActive = colorHex === currentThemeHex ? 'is-active-theme' : '';
                     return `
                         <div class="theme-color-swatch-btn ${isActive}" 
                              style="background-color: ${colorHex};" 
-                             onclick="ScholarlyApp.updateApplicationTheme('${colorHex}')">
+                             onclick="ScholarlyApplicationManager.updateApplicationTheme('${colorHex}')">
                             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
                     `;
                 }).join('');
+                
+                document.getElementById('ui-toggle-focus-mode').checked = this.database.settings.focusMode;
             }
 
+            /**
+             * Modifies the theme color and triggers a UI update.
+             */
             updateApplicationTheme(hexColorCode) {
                 this.database.settings.themeColor = hexColorCode;
                 this.applyThemeConfiguration();
@@ -1670,311 +1494,126 @@
             // UTILITIES
             // ==========================================
 
+            /**
+             * Displays a temporary popup notification to the user.
+             */
             dispatchToastNotification(messageString, messageType = "info") {
                 const containerNode = document.getElementById('ui-toast-container');
                 const toastNode = document.createElement('div');
                 toastNode.className = 'toast-notification-card';
-                
-                const iconMap = { 'success': '✅', 'error': '⚠️', 'info': 'ℹ️' };
-                const selectedIcon = iconMap[messageType] || iconMap['info'];
+                const selectedIcon = messageType === 'success' ? '✅' : (messageType === 'error' ? '⚠️' : 'ℹ️');
                 
                 toastNode.innerHTML = `<span>${selectedIcon}</span> <span>${messageString}</span>`;
                 containerNode.appendChild(toastNode);
                 
-                // Self destruct after animation completes
-                setTimeout(() => {
-                    if (containerNode.contains(toastNode)) {
-                        containerNode.removeChild(toastNode);
-                    }
-                }, 3900);
+                setTimeout(() => { if (containerNode.contains(toastNode)) containerNode.removeChild(toastNode); }, 3900);
             }
 
+            /**
+             * Retrieves a subject object by its ID, with a fallback for deleted subjects.
+             */
             getSubjectObjectById(subjectId) {
                 const foundSubject = this.database.subjects.find(s => s.id === subjectId);
                 return foundSubject ? foundSubject : { name: 'Deleted Data', icon: '❓', colorClass: 'math' };
-            }
-
-            formatDateToReadableString(dateString, includeYear = false) {
-                const dateObj = new Date(dateString + "T00:00:00");
-                const formattingOptions = { month: 'short', day: 'numeric' };
-                if (includeYear) formattingOptions.year = 'numeric';
-                return dateObj.toLocaleDateString('en-US', formattingOptions);
             }
 
             // ==========================================
             // RENDERING PIPELINE
             // ==========================================
 
+            /**
+             * Orchestrates the rendering of all individual application views.
+             */
             executeRenderPipeline() {
                 this.renderDashboardView();
-                this.renderPlannerView();
                 this.renderAssignmentsMasterView();
-                this.renderMonthlyCalendarView();
                 this.renderSubjectsView();
-                this.renderStudyGroupsView();
                 this.renderSettingsView();
             }
 
-            // --- VIEW 1: DASHBOARD ---
+            /**
+             * Renders the primary Dashboard View.
+             */
             renderDashboardView() {
-                // Set Header Date
                 const contextDateObj = new Date(SYSTEM_CONTEXT_DATE + "T00:00:00");
                 document.getElementById('ui-dashboard-date-display').innerText = contextDateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
                 
-                // Calculate Metrics
                 const activeTaskCollection = this.database.tasks.filter(task => !task.isCompleted);
                 const completedTaskCollection = this.database.tasks.filter(task => task.isCompleted);
-                
                 const overdueTaskCollection = activeTaskCollection.filter(task => task.date < SYSTEM_CONTEXT_DATE);
-                
-                // Sort upcoming tasks chronologically
-                const upcomingTaskCollection = activeTaskCollection
-                    .filter(task => task.date >= SYSTEM_CONTEXT_DATE)
-                    .sort((a, b) => a.date.localeCompare(b.date));
-                
-                // Calculate tasks due within the user's defined reminder threshold
+                const upcomingTaskCollection = activeTaskCollection.filter(task => task.date >= SYSTEM_CONTEXT_DATE).sort((a, b) => a.date.localeCompare(b.date));
                 const dueThisWeekCollection = upcomingTaskCollection.filter(task => {
-                    const timeDifferenceMs = new Date(task.date) - new Date(SYSTEM_CONTEXT_DATE);
-                    const differenceInDays = Math.ceil(timeDifferenceMs / (1000 * 60 * 60 * 24));
-                    return differenceInDays <= this.database.settings.reminderDays;
+                    const diffDays = Math.ceil((new Date(task.date) - new Date(SYSTEM_CONTEXT_DATE)) / (1000 * 60 * 60 * 24));
+                    return diffDays <= this.database.settings.reminderDays;
                 });
 
-                // Inject Metrics to DOM
                 document.getElementById('ui-metric-active-count').innerText = activeTaskCollection.length;
                 document.getElementById('ui-metric-completed-count').innerText = completedTaskCollection.length;
                 document.getElementById('ui-metric-overdue-count').innerText = overdueTaskCollection.length;
                 document.getElementById('ui-metric-due-soon-count').innerText = dueThisWeekCollection.length;
 
-                // Render Overdue Tasks List
                 const overdueContainer = document.getElementById('ui-container-overdue-tasks');
-                if (overdueTaskCollection.length > 0) {
-                    overdueContainer.innerHTML = overdueTaskCollection.map(task => this.generateTaskHtmlComponent(task, true)).join('');
-                } else {
-                    overdueContainer.innerHTML = `<div class="empty-state-message">No overdue assignments detected! 🎉 You are completely caught up.</div>`;
-                }
+                overdueContainer.innerHTML = overdueTaskCollection.length > 0 
+                    ? overdueTaskCollection.map(task => this.generateTaskHtmlComponent(task, true)).join('')
+                    : `<div class="empty-state-message">No overdue assignments detected! 🎉</div>`;
 
-                // Render Upcoming Tasks List (Limit to 5)
                 const upcomingContainer = document.getElementById('ui-container-upcoming-tasks');
-                if (upcomingTaskCollection.length > 0) {
-                    const limitedUpcoming = upcomingTaskCollection.slice(0, 5);
-                    upcomingContainer.innerHTML = limitedUpcoming.map(task => this.generateTaskHtmlComponent(task, true)).join('');
-                } else {
-                    upcomingContainer.innerHTML = `<div class="empty-state-message">No upcoming tasks scheduled in the pipeline.</div>`;
-                }
+                upcomingContainer.innerHTML = upcomingTaskCollection.length > 0 
+                    ? upcomingTaskCollection.slice(0, 5).map(task => this.generateTaskHtmlComponent(task, true)).join('')
+                    : `<div class="empty-state-message">No upcoming tasks scheduled in the pipeline.</div>`;
             }
 
-            // --- VIEW 2: PLANNER ---
-            modifyPlannerDateByOffset(offsetDirection) {
-                const dateObj = new Date(this.activePlannerDateString + "T00:00:00");
-                dateObj.setDate(dateObj.getDate() + offsetDirection);
-                this.activePlannerDateString = dateObj.toISOString().split('T')[0];
-                this.renderPlannerView();
-            }
-
-            resetPlannerDateToToday() {
-                this.activePlannerDateString = SYSTEM_CONTEXT_DATE;
-                this.renderPlannerView();
-            }
-
-            renderPlannerView() {
-                // Update display label
-                const displayDateObj = new Date(this.activePlannerDateString + "T00:00:00");
-                document.getElementById('ui-planner-active-date-display').innerText = displayDateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-                
-                const timelineContainer = document.getElementById('ui-container-planner-timeline');
-                let timelineHTMLString = '';
-                
-                // Build robust timeline from 6 AM to 11 PM
-                for (let hourIndex = 6; hourIndex <= 23; hourIndex++) {
-                    const amPmSuffix = hourIndex >= 12 ? 'PM' : 'AM';
-                    const displayHourNumber = hourIndex > 12 ? hourIndex - 12 : (hourIndex === 0 ? 12 : hourIndex);
-                    const formattedHourString = (hourIndex < 10 ? '0' : '') + hourIndex;
-                    
-                    // Find tasks matching date and specific hour
-                    const hourTasks = this.database.tasks.filter(task => 
-                        task.date === this.activePlannerDateString && 
-                        task.time.startsWith(formattedHourString) && 
-                        !task.isCompleted
-                    );
-                    
-                    let eventCardsHTML = '';
-                    if (hourTasks.length > 0) {
-                        // Render first task found for simplicity in UI constraints
-                        const primaryTask = hourTasks[0];
-                        const associatedSubject = this.getSubjectObjectById(primaryTask.subjectId);
-                        eventCardsHTML = `
-                            <div class="timeline-active-event-card">
-                                ${associatedSubject.icon} ${primaryTask.title}
-                            </div>
-                        `;
-                    }
-                    
-                    timelineHTMLString += `
-                        <div class="timeline-hour-slot">
-                            <div class="timeline-hour-label">${displayHourNumber} ${amPmSuffix}</div>
-                            <div class="timeline-event-area" onclick="ScholarlyApp.openModalInterface('task', {date: '${this.activePlannerDateString}', time: '${formattedHourString}:00'})">
-                                ${eventCardsHTML}
-                            </div>
-                        </div>
-                    `;
-                }
-                timelineContainer.innerHTML = timelineHTMLString;
-            }
-
-            // --- VIEW 3: ASSIGNMENTS MASTER ---
+            /**
+             * Renders the comprehensive list of assignments, factoring in Focus Mode.
+             */
             renderAssignmentsMasterView() {
-                // Ensure Subject Dropdown Filter is populated correctly
-                const subjectFilterDropdown = document.getElementById('ui-filter-subject-dropdown');
-                if (subjectFilterDropdown.options.length <= 1) {
-                    this.database.subjects.forEach(subject => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = subject.id;
-                        optionElement.text = subject.name;
-                        subjectFilterDropdown.appendChild(optionElement);
-                    });
+                let filteredTaskCollection = this.database.tasks;
+                
+                // Apply strict Focus Mode setting
+                if (this.database.settings.focusMode) {
+                    filteredTaskCollection = filteredTaskCollection.filter(task => !task.isCompleted);
                 }
 
-                // Retrieve current filter criteria
-                const searchStringQuery = document.getElementById('ui-filter-search-input').value.toLowerCase();
-                const subjectIdQuery = subjectFilterDropdown.value;
-                const statusQuery = document.getElementById('ui-filter-status-dropdown').value;
-
-                // Execute filter logic
-                const filteredTaskCollection = this.database.tasks.filter(task => {
-                    const matchesSearchText = task.title.toLowerCase().includes(searchStringQuery) || 
-                                              (task.desc && task.desc.toLowerCase().includes(searchStringQuery));
-                    
-                    const matchesSubjectFilter = subjectIdQuery === 'all' || task.subjectId === subjectIdQuery;
-                    
-                    let matchesStatusFilter = true;
-                    if (statusQuery === 'active') {
-                        matchesStatusFilter = !task.isCompleted;
-                    } else if (statusQuery === 'done') {
-                        matchesStatusFilter = task.isCompleted;
-                    } else if (statusQuery === 'overdue') {
-                        matchesStatusFilter = !task.isCompleted && task.date < SYSTEM_CONTEXT_DATE;
-                    }
-
-                    return matchesSearchText && matchesSubjectFilter && matchesStatusFilter;
-                });
-
-                // Update UI text and container
-                document.getElementById('ui-assignment-metrics-display').innerText = `Displaying ${filteredTaskCollection.length} result(s) from ${this.database.tasks.length} total assignment records.`;
-                
                 const listContainerNode = document.getElementById('ui-container-all-tasks-list');
                 if (filteredTaskCollection.length > 0) {
                     listContainerNode.innerHTML = filteredTaskCollection.map(task => this.generateTaskHtmlComponent(task, false)).join('');
                 } else {
-                    listContainerNode.innerHTML = `<div class="empty-state-message">No assignment records match the applied filter criteria.</div>`;
+                    listContainerNode.innerHTML = `<div class="empty-state-message">No assignment records to display.</div>`;
                 }
             }
 
-            // --- VIEW 4: MONTHLY CALENDAR ---
-            renderMonthlyCalendarView() {
-                // Generates a static matrix for September 2026 (Starts on Tuesday)
-                const gridContainerNode = document.getElementById('ui-container-calendar-grid');
-                let calendarMatrixHTML = '';
-                
-                // Insert blank prefix cells for Sunday (0) and Monday (1)
-                calendarMatrixHTML += `<div class="calendar-day-cell"></div><div class="calendar-day-cell"></div>`;
-                
-                // Iterate 30 days of September
-                for(let dayInt = 1; dayInt <= 30; dayInt++) {
-                    const formattedDayString = dayInt < 10 ? `0${dayInt}` : `${dayInt}`;
-                    const targetDateString = `2026-09-${formattedDayString}`;
-                    const isSystemToday = targetDateString === SYSTEM_CONTEXT_DATE;
-                    
-                    // Find tasks for this specific date
-                    const tasksForDate = this.database.tasks.filter(task => task.date === targetDateString);
-                    
-                    const taskMiniTagsHTML = tasksForDate.map(task => {
-                        const conditionalStyling = task.isCompleted ? 'opacity: 0.6; text-decoration: line-through; background-color: var(--border-focus);' : '';
-                        return `<div class="calendar-mini-event-tag" style="${conditionalStyling}" title="${task.title}">${task.title}</div>`;
-                    }).join('');
-                    
-                    const todayClassInjection = isSystemToday ? 'is-current-day' : '';
-                    
-                    calendarMatrixHTML += `
-                        <div class="calendar-day-cell" onclick="ScholarlyApp.openModalInterface('task', {date: '${targetDateString}'})">
-                            <div class="calendar-date-indicator ${todayClassInjection}">${dayInt}</div>
-                            ${taskMiniTagsHTML}
-                        </div>
-                    `;
-                }
-                gridContainerNode.innerHTML = calendarMatrixHTML;
-            }
-
-            // --- VIEW 5: SUBJECTS ---
+            /**
+             * Renders the Subjects tracking grid, calculating completion percentages.
+             */
             renderSubjectsView() {
                 document.getElementById('ui-subject-count-display').innerText = `Managing ${this.database.subjects.length} active subject curriculums.`;
                 const gridContainerNode = document.getElementById('ui-container-subjects-grid');
                 
                 if (this.database.subjects.length > 0) {
                     gridContainerNode.innerHTML = this.database.subjects.map(subjectObj => {
-                        // Calculate specific subject completion metrics
-                        const associatedTasks = this.database.tasks.filter(t => t.subjectId === subjectObj.id);
-                        const completedTasksCount = associatedTasks.filter(t => t.isCompleted).length;
-                        const totalTasksCount = associatedTasks.length;
-                        const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 0;
-                        
                         return `
-                            <div class="entity-data-card">
-                                <div class="entity-large-icon" style="background-color: var(--sub-${subjectObj.colorClass}-bg); color: var(--sub-${subjectObj.colorClass}-text);">
+                            <div class="metric-data-card" style="flex-direction: row; align-items: center; gap: 1.5rem;">
+                                <div class="metric-icon-wrapper" style="margin: 0; background-color: var(--sub-${subjectObj.colorClass}-bg); color: var(--sub-${subjectObj.colorClass}-text);">
                                     ${subjectObj.icon}
                                 </div>
-                                <div class="entity-info-container">
-                                    <h3 class="entity-title-heading">${subjectObj.name}</h3>
-                                    <p class="entity-subtitle-text">${subjectObj.teacher}</p>
-                                    
-                                    <div class="entity-progress-wrapper">
-                                        <div class="entity-progress-statistics">
-                                            <span>${completedTasksCount}/${totalTasksCount} Completed</span>
-                                            <span>${completionPercentage}%</span>
-                                        </div>
-                                        <div class="entity-progress-track-bg">
-                                            <div class="entity-progress-fill-bar" style="width: ${completionPercentage}%;"></div>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2px;">${subjectObj.name}</h3>
+                                    <p style="font-size: 0.95rem; color: var(--text-secondary);">${subjectObj.teacher}</p>
                                 </div>
-                                <button class="button-danger-subtle" onclick="ScholarlyApp.deleteSubjectRecord('${subjectObj.id}')" title="Permanently Delete Subject">
+                                <button class="button-danger-subtle" style="margin-left: auto;" onclick="ScholarlyApplicationManager.deleteSubjectRecord('${subjectObj.id}')">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
                         `;
                     }).join('');
                 } else {
-                    gridContainerNode.innerHTML = `<div class="empty-state-message">No subject data found. Please add a subject to begin tracking progress.</div>`;
+                    gridContainerNode.innerHTML = `<div class="empty-state-message">No subject data found. Please add a course to begin tracking.</div>`;
                 }
             }
 
-            // --- VIEW 6: STUDY GROUPS ---
-            renderStudyGroupsView() {
-                const gridContainerNode = document.getElementById('ui-container-groups-grid');
-                
-                if (this.database.groups.length > 0) {
-                    gridContainerNode.innerHTML = this.database.groups.map(groupObj => {
-                        return `
-                            <div class="entity-data-card">
-                                <div class="entity-large-icon" style="background-color: var(--theme-primary); color: var(--color-white); border-radius: 50%;">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
-                                </div>
-                                <div class="entity-info-container">
-                                    <h3 class="entity-title-heading">${groupObj.name}</h3>
-                                    <p class="entity-subtitle-text" style="margin-bottom: var(--space-2);">${groupObj.description}</p>
-                                    <span class="metadata-badge metadata-badge-outline">${groupObj.memberCount} Active Member(s)</span>
-                                </div>
-                                <button class="button-danger-subtle" onclick="ScholarlyApp.deleteStudyGroupRecord('${groupObj.id}')" title="Disband Group">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                                </button>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    gridContainerNode.innerHTML = `<div class="empty-state-message">No active study groups exist. Create a new collaborative space!</div>`;
-                }
-            }
-
-            // --- VIEW 7: SETTINGS ---
+            /**
+             * Renders current user preferences into the settings form.
+             */
             renderSettingsView() {
                 document.getElementById('ui-input-setting-display-name').value = this.database.settings.displayName;
                 document.getElementById('ui-input-setting-reminder-days').value = this.database.settings.reminderDays;
@@ -1984,24 +1623,23 @@
             // HTML COMPONENT GENERATORS
             // ==========================================
             
+            /**
+             * Constructs the HTML block for an individual assignment card.
+             */
             generateTaskHtmlComponent(taskDataObj, renderContextualTags) {
                 const subjectObj = this.getSubjectObjectById(taskDataObj.subjectId);
                 const isTaskOverdue = !taskDataObj.isCompleted && taskDataObj.date < SYSTEM_CONTEXT_DATE;
+                const formattedDateString = new Date(taskDataObj.date + "T00:00:00").toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 
-                const formattedDateString = this.formatDateToReadableString(taskDataObj.date);
-                
-                // Determine appropriate date badge based on context flag
                 let dateBadgeHTML = `<span class="metadata-badge metadata-badge-outline">${formattedDateString}</span>`;
-                
                 if (renderContextualTags) {
                     if (isTaskOverdue) {
-                        dateBadgeHTML = `<span class="metadata-badge" style="background-color: var(--status-error-bg); color: var(--status-error-text);">${formattedDateString} · Overdue Warning</span>`;
+                        dateBadgeHTML = `<span class="metadata-badge" style="background-color: var(--status-error-bg); color: var(--status-error-text);">${formattedDateString} · Overdue</span>`;
                     } else if (!taskDataObj.isCompleted) {
-                        dateBadgeHTML = `<span class="metadata-badge" style="background-color: var(--status-warning-bg); color: var(--status-warning-text);">${formattedDateString} · Action Required</span>`;
+                        dateBadgeHTML = `<span class="metadata-badge" style="background-color: var(--status-warning-bg); color: var(--status-warning-text);">${formattedDateString} · Due</span>`;
                     }
                 }
 
-                // Determine dynamic classes based on completion status
                 const indicatorColorStyling = taskDataObj.isCompleted ? 'background-color: var(--border-focus);' : 'background-color: var(--theme-primary);';
                 const checkboxClassToggle = taskDataObj.isCompleted ? 'is-checked' : '';
                 const titleClassToggle = taskDataObj.isCompleted ? 'is-completed' : '';
@@ -2011,7 +1649,7 @@
                         <div class="assignment-color-stripe" style="${indicatorColorStyling}"></div>
                         
                         <div class="assignment-checkbox-custom ${checkboxClassToggle}" 
-                             onclick="ScholarlyApp.toggleTaskCompletionState('${taskDataObj.id}')">
+                             onclick="ScholarlyApplicationManager.toggleTaskCompletionState('${taskDataObj.id}')">
                         </div>
                         
                         <div class="assignment-content-wrapper">
@@ -2023,13 +1661,13 @@
                                     ${subjectObj.icon} ${subjectObj.name}
                                 </span>
                                 <span class="metadata-badge" style="background-color: var(--status-info-bg); color: var(--status-info-text);">
-                                    ${taskDataObj.priority} Priority Tier
+                                    ${taskDataObj.priority} Priority
                                 </span>
                                 ${dateBadgeHTML}
                             </div>
                         </div>
                         
-                        <button class="button-danger-subtle" onclick="ScholarlyApp.deleteTaskRecord('${taskDataObj.id}')" title="Delete Assignment Permanently">
+                        <button class="button-danger-subtle" onclick="ScholarlyApplicationManager.deleteTaskRecord('${taskDataObj.id}')" title="Delete">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                         </button>
                     </div>
@@ -2040,98 +1678,73 @@
             // DATA MUTATION CONTROLLERS
             // ==========================================
 
+            /**
+             * Toggles a given task between active and completed states.
+             */
             toggleTaskCompletionState(taskId) {
                 const targetTask = this.database.tasks.find(task => task.id === taskId);
                 if (targetTask) {
                     targetTask.isCompleted = !targetTask.isCompleted;
                     this.commitDatabaseToStorage();
-                    this.dispatchToastNotification(targetTask.isCompleted ? "Assignment successfully marked as completed." : "Assignment reverted to active status.", "success");
                 }
             }
 
+            /**
+             * Permanently deletes a single task.
+             */
             deleteTaskRecord(taskId) {
-                if (confirm("Action Required: Are you certain you want to permanently delete this task record?")) {
+                if (confirm("Delete this task record permanently?")) {
                     this.database.tasks = this.database.tasks.filter(task => task.id !== taskId);
                     this.commitDatabaseToStorage();
-                    this.dispatchToastNotification("Task record deleted from local database.", "info");
                 }
             }
             
+            /**
+             * Permanently deletes a subject and all child tasks cascading from it.
+             */
             deleteSubjectRecord(subjectId) {
-                if (confirm("CRITICAL WARNING: Deleting this subject will also permanently destroy all assignments tied to it. Do you wish to proceed?")) {
-                    // Remove Subject
+                if (confirm("Delete course and ALL associated assignments?")) {
                     this.database.subjects = this.database.subjects.filter(subject => subject.id !== subjectId);
-                    // Cascade Remove Tasks
                     this.database.tasks = this.database.tasks.filter(task => task.subjectId !== subjectId);
-                    
                     this.commitDatabaseToStorage();
-                    this.dispatchToastNotification("Subject and all cascading data dependencies destroyed.", "success");
-                    
-                    // Reset dropdown filter UI state
-                    document.getElementById('ui-filter-subject-dropdown').innerHTML = '<option value="all">All Registered Subjects</option>';
-                    this.renderAssignmentsMasterView();
-                }
-            }
-            
-            deleteStudyGroupRecord(groupId) {
-                if (confirm("Action Required: Are you sure you want to disband and delete this study group?")) {
-                    this.database.groups = this.database.groups.filter(group => group.id !== groupId);
-                    this.commitDatabaseToStorage();
-                    this.dispatchToastNotification("Study group successfully disbanded.", "success");
                 }
             }
 
-            // ==========================================
-            // MODAL INTERFACE CONTROLLERS
-            // ==========================================
-
+            /**
+             * Displays the requested modal form and populates dropdowns if needed.
+             */
             openModalInterface(modalTypeString, prefillDataObject = {}) {
-                // Activate Backdrop Overlay
                 document.getElementById('ui-global-modal-backdrop').classList.add('is-visible');
-                
-                // Hide all dialogs first
                 document.querySelectorAll('.modal-dialog-box').forEach(dialog => dialog.style.display = 'none');
                 
-                // Show specific dialog
                 const targetDialog = document.getElementById('ui-modal-dialog-' + modalTypeString);
-                if (targetDialog) {
-                    targetDialog.style.display = 'flex';
-                }
+                if (targetDialog) targetDialog.style.display = 'flex';
 
-                // Handle Specific Modal Prefilling
                 if (modalTypeString === 'task') {
                     const subjectDropdownNode = document.getElementById('ui-modal-input-task-subject');
-                    subjectDropdownNode.innerHTML = this.database.subjects.map(subject => {
-                        return `<option value="${subject.id}">${subject.icon} ${subject.name}</option>`;
-                    }).join('');
-                    
+                    subjectDropdownNode.innerHTML = this.database.subjects.map(subject => `<option value="${subject.id}">${subject.icon} ${subject.name}</option>`).join('');
                     document.getElementById('ui-modal-input-task-date').value = prefillDataObject.date || SYSTEM_CONTEXT_DATE;
-                    if (prefillDataObject.time) {
-                        document.getElementById('ui-modal-input-task-time').value = prefillDataObject.time;
-                    }
                 }
             }
 
+            /**
+             * Hides all active modals and clears form data.
+             */
             closeModalInterfaces() {
-                // Fade out backdrop
                 document.getElementById('ui-global-modal-backdrop').classList.remove('is-visible');
-                
-                // Execute cleanup after CSS transition finishes
                 setTimeout(() => {
                     document.querySelectorAll('.modal-dialog-box').forEach(dialog => dialog.style.display = 'none');
                     document.querySelectorAll('form').forEach(formElement => formElement.reset());
-                }, 350); // Matches CSS transition duration
+                }, 350);
             }
 
-            // ==========================================
-            // FORM PROCESSING PROTOCOLS
-            // ==========================================
-
+            /**
+             * Handles form submission for new tasks.
+             */
             processTaskCreation(submitEvent) {
                 submitEvent.preventDefault();
-                
-                const newTaskRecord = {
-                    id: "tsk_" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+                this.database.tasks.push({
+                    id: "tsk_" + Date.now().toString(36),
                     title: document.getElementById('ui-modal-input-task-title').value,
                     desc: document.getElementById('ui-modal-input-task-desc').value,
                     subjectId: document.getElementById('ui-modal-input-task-subject').value,
@@ -2139,70 +1752,44 @@
                     date: document.getElementById('ui-modal-input-task-date').value,
                     time: document.getElementById('ui-modal-input-task-time').value,
                     isCompleted: false
-                };
-                
-                this.database.tasks.push(newTaskRecord);
+                });
                 this.commitDatabaseToStorage();
                 this.closeModalInterfaces();
-                this.dispatchToastNotification("New task record synthesized and saved.", "success");
+                this.dispatchToastNotification("Assignment Saved.", "success");
             }
 
+            /**
+             * Handles form submission for new subjects/courses.
+             */
             processSubjectCreation(submitEvent) {
                 submitEvent.preventDefault();
-                
-                const newSubjectRecord = {
-                    id: "sub_" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+                this.database.subjects.push({
+                    id: "sub_" + Date.now().toString(36),
                     name: document.getElementById('ui-modal-input-subject-name').value,
                     teacher: document.getElementById('ui-modal-input-subject-teacher').value,
                     icon: document.getElementById('ui-modal-input-subject-icon').value,
                     colorClass: document.getElementById('ui-modal-input-subject-color').value
-                };
-                
-                this.database.subjects.push(newSubjectRecord);
+                });
                 this.commitDatabaseToStorage();
                 this.closeModalInterfaces();
-                
-                // Reset Assignment Dropdown forcing a re-render
-                document.getElementById('ui-filter-subject-dropdown').innerHTML = '<option value="all">All Registered Subjects</option>';
-                this.dispatchToastNotification("Subject successfully initialized.", "success");
+                this.dispatchToastNotification("Subject Added.", "success");
             }
 
-            processGroupCreation(submitEvent) {
-                submitEvent.preventDefault();
-                
-                const newGroupRecord = {
-                    id: "grp_" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-                    name: document.getElementById('ui-modal-input-group-name').value,
-                    description: document.getElementById('ui-modal-input-group-desc').value,
-                    memberCount: 1 // Default to 1 (the creator)
-                };
-                
-                this.database.groups.push(newGroupRecord);
-                this.commitDatabaseToStorage();
-                this.closeModalInterfaces();
-                this.dispatchToastNotification("Study group architecture deployed.", "success");
-            }
-
+            /**
+             * Processes and commits changes made in the settings view.
+             */
             processSettingsSave(submitEvent) {
                 submitEvent.preventDefault();
-                
-                const proposedName = document.getElementById('ui-input-setting-display-name').value;
-                const proposedDays = parseInt(document.getElementById('ui-input-setting-reminder-days').value);
-                
-                this.database.settings.displayName = proposedName;
-                this.database.settings.reminderDays = isNaN(proposedDays) ? 7 : proposedDays;
-                
+                this.database.settings.displayName = document.getElementById('ui-input-setting-display-name').value;
+                this.database.settings.reminderDays = parseInt(document.getElementById('ui-input-setting-reminder-days').value) || 7;
+                this.database.settings.focusMode = document.getElementById('ui-toggle-focus-mode').checked;
                 this.commitDatabaseToStorage();
-                this.dispatchToastNotification("Configuration preferences securely updated.", "success");
+                this.dispatchToastNotification("Preferences updated successfully.", "success");
             }
         }
 
-        // ==========================================
-        // APPLICATION BOOTSTRAP
-        // ==========================================
-        // Initialize the Singleton Application Controller when DOM is parsed
-        const ScholarlyApp = new ScholarlyApplicationController();
-        
+        // Initialize Application State on Load
+        const ScholarlyApplicationManager = new ScholarlyApplicationController();
     </script>
 </body>
 </html>
