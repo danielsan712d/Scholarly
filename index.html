@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholarly - Advanced Professional Edition</title>
+    <title>Scholarly - Maximum Expansion Architecture</title>
     
     <!-- 
         ========================================================================
@@ -31,7 +31,7 @@
             --theme-primary-hover: #4f46e5;
             --theme-primary-active: #4338ca;
             --theme-primary-light: rgba(99, 102, 241, 0.1);
-            --theme-primary-lighter: rgba(99, 102, 241, 0.05);
+            --theme-primary-lighter: rgba(99, 102, 241, 0.04);
             
             /* Surface & Background Colors */
             --bg-body: #f8fafc;
@@ -174,9 +174,9 @@
         textarea {
             font-family: inherit;
             color: inherit;
-            outline: none;
-            border: none;
-            background: none;
+            outline-style: none;
+            border-style: none;
+            background-color: transparent;
         }
 
         button {
@@ -184,7 +184,7 @@
         }
 
         a {
-            text-decoration: none;
+            text-decoration-line: none;
             color: inherit;
         }
         
@@ -444,9 +444,6 @@
             color: var(--text-primary);
         }
 
-        /* 
-         * UPDATED: Make deletion buttons permanently visible 
-         */
         .button-danger-subtle {
             background-color: var(--status-error-bg);
             color: var(--status-error-text);
@@ -458,7 +455,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 1; /* Made permanently visible */
+            opacity: 1; 
             transition-property: all;
             transition-duration: var(--transition-fast);
         }
@@ -742,6 +739,16 @@
             border-style: solid;
             border-color: var(--border-medium);
             color: var(--text-secondary);
+        }
+
+        .assignment-filter-bar { 
+            display: flex; 
+            gap: var(--space-4); 
+            margin-bottom: var(--space-8); 
+            background: var(--bg-surface-primary); 
+            padding: var(--space-3); 
+            border-radius: var(--radius-xl); 
+            border: 1px solid var(--border-medium); 
         }
 
         .configuration-panel {
@@ -1089,6 +1096,17 @@
                     <button class="button-base button-primary" onclick="ScholarlyApplicationManager.openModalInterface('task')">+ Create Assignment</button>
                 </header>
 
+                <div class="assignment-filter-bar">
+                    <input type="text" class="form-input-control" id="ui-filter-search" placeholder="Search tasks..." style="flex: 2;">
+                    <select class="form-input-control" id="ui-filter-subject" style="flex: 1;"><option value="all">All Subjects</option></select>
+                    <select class="form-input-control" id="ui-filter-status" style="flex: 1;">
+                        <option value="all">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="done">Completed</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                </div>
+
                 <div class="task-items-container" id="ui-container-all-tasks-list"></div>
             </section>
 
@@ -1307,7 +1325,7 @@
          * Handles local persistence, DOM rendering, state mutations, and settings.
          */
 
-        const STORAGE_KEY = 'scholarly_pro_database_v4';
+        const STORAGE_KEY = 'scholarly_pro_database_v6';
         const SYSTEM_CONTEXT_DATE = "2026-09-01"; 
         
         const THEME_PALETTE = [
@@ -1316,7 +1334,7 @@
         ];
 
         const FACTORY_SEED_DATA = {
-            metadata: { version: "4.0.0", lastInitialized: new Date().toISOString() },
+            metadata: { version: "6.0.0", lastInitialized: new Date().toISOString() },
             settings: { 
                 displayName: "danielsan712d", 
                 themeColor: "#6366f1", 
@@ -1328,7 +1346,6 @@
                 { id: "sub_beta", name: "Literature & Composition", teacher: "Ms. Garcia", icon: "📖", colorClass: "eng" },
                 { id: "sub_gamma", name: "Cellular Biology", teacher: "Dr. Patel", icon: "🧪", colorClass: "bio" }
             ],
-            groups: [], 
             tasks: [
                 { id: "tsk_001", title: "Read Chapter 3 Analysis", desc: "Read and comprehensively annotate chapter 3.", subjectId: "sub_beta", priority: "Medium", date: "2026-08-30", time: "09:00", isCompleted: false },
                 { id: "tsk_002", title: "Algebraic Functions Set", desc: "Complete one full lesson module.", subjectId: "sub_alpha", priority: "Medium", date: "2026-09-01", time: "10:00", isCompleted: false },
@@ -1449,6 +1466,13 @@
                         document.getElementById(targetViewId).classList.add('is-active');
                     });
                 });
+                
+                // Add real-time filtering listeners
+                const filterInputs = ['ui-filter-search', 'ui-filter-subject', 'ui-filter-status'];
+                filterInputs.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.addEventListener('input', () => this.renderAssignmentsMasterView());
+                });
 
                 document.getElementById('ui-global-modal-backdrop').addEventListener('click', (event) => {
                     if (event.target.id === 'ui-global-modal-backdrop') this.closeModalInterfaces();
@@ -1567,7 +1591,45 @@
              * Renders the comprehensive list of assignments, factoring in Focus Mode.
              */
             renderAssignmentsMasterView() {
+                // Ensure Subject Dropdown Filter is populated correctly
+                const subjectFilterDropdown = document.getElementById('ui-filter-subject');
+                if (subjectFilterDropdown && subjectFilterDropdown.options.length <= 1) {
+                    this.database.subjects.forEach(subject => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = subject.id;
+                        optionElement.text = subject.name;
+                        subjectFilterDropdown.appendChild(optionElement);
+                    });
+                }
+                
                 let filteredTaskCollection = this.database.tasks;
+                
+                // Get filter values securely
+                const searchNode = document.getElementById('ui-filter-search');
+                const subjectNode = document.getElementById('ui-filter-subject');
+                const statusNode = document.getElementById('ui-filter-status');
+                
+                const searchStringQuery = searchNode ? searchNode.value.toLowerCase() : '';
+                const subjectIdQuery = subjectNode ? subjectNode.value : 'all';
+                const statusQuery = statusNode ? statusNode.value : 'all';
+
+                filteredTaskCollection = filteredTaskCollection.filter(task => {
+                    const matchesSearchText = task.title.toLowerCase().includes(searchStringQuery) || 
+                                              (task.desc && task.desc.toLowerCase().includes(searchStringQuery));
+                    
+                    const matchesSubjectFilter = subjectIdQuery === 'all' || task.subjectId === subjectIdQuery;
+                    
+                    let matchesStatusFilter = true;
+                    if (statusQuery === 'active') {
+                        matchesStatusFilter = !task.isCompleted;
+                    } else if (statusQuery === 'done') {
+                        matchesStatusFilter = task.isCompleted;
+                    } else if (statusQuery === 'overdue') {
+                        matchesStatusFilter = !task.isCompleted && task.date < SYSTEM_CONTEXT_DATE;
+                    }
+
+                    return matchesSearchText && matchesSubjectFilter && matchesStatusFilter;
+                });
                 
                 // Apply strict Focus Mode setting
                 if (this.database.settings.focusMode) {
@@ -1575,10 +1637,18 @@
                 }
 
                 const listContainerNode = document.getElementById('ui-container-all-tasks-list');
-                if (filteredTaskCollection.length > 0) {
-                    listContainerNode.innerHTML = filteredTaskCollection.map(task => this.generateTaskHtmlComponent(task, false)).join('');
-                } else {
-                    listContainerNode.innerHTML = `<div class="empty-state-message">No assignment records to display.</div>`;
+                const metricsDisplayNode = document.getElementById('ui-assignment-metrics-display');
+                
+                if (metricsDisplayNode) {
+                    metricsDisplayNode.innerText = `Displaying ${filteredTaskCollection.length} result(s) from ${this.database.tasks.length} total assignment records.`;
+                }
+
+                if (listContainerNode) {
+                    if (filteredTaskCollection.length > 0) {
+                        listContainerNode.innerHTML = filteredTaskCollection.map(task => this.generateTaskHtmlComponent(task, false)).join('');
+                    } else {
+                        listContainerNode.innerHTML = `<div class="empty-state-message">No assignment records to display.</div>`;
+                    }
                 }
             }
 
@@ -1706,6 +1776,11 @@
                 if (confirm("Delete course and ALL associated assignments?")) {
                     this.database.subjects = this.database.subjects.filter(subject => subject.id !== subjectId);
                     this.database.tasks = this.database.tasks.filter(task => task.subjectId !== subjectId);
+                    
+                    // Reset dropdown
+                    const subDrop = document.getElementById('ui-filter-subject');
+                    if(subDrop) subDrop.innerHTML = '<option value="all">All Subjects</option>';
+                    
                     this.commitDatabaseToStorage();
                 }
             }
@@ -1770,6 +1845,10 @@
                     icon: document.getElementById('ui-modal-input-subject-icon').value,
                     colorClass: document.getElementById('ui-modal-input-subject-color').value
                 });
+                
+                const subDrop = document.getElementById('ui-filter-subject');
+                if(subDrop) subDrop.innerHTML = '<option value="all">All Subjects</option>';
+                
                 this.commitDatabaseToStorage();
                 this.closeModalInterfaces();
                 this.dispatchToastNotification("Subject Added.", "success");
